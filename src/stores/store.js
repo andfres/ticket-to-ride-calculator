@@ -37,9 +37,15 @@ export const useStore = defineStore({
       return total;
     },
 
-    decirhola() {
-      console.log("hola");
+    sumarObjetivos(jugador){
+      const objetivos = this.clasificacion[jugador].objetivos.filter(Boolean);
+      let total = 0;
+      for (let objetivo of objetivos) {
+        total += objetivo;
+      }
+      return total;
     },
+
 
     sumarTotalPuntos(jugador) {
       let puntosTotales = 0;
@@ -49,35 +55,23 @@ export const useStore = defineStore({
       const punObjetivos = this.sumarObjetivos(jugador);
       puntosTotales = puntosVagones + punEstaciones + punObjetivos ;
 
-      console.log(
-        "puntosVagones",
-        puntosVagones,
-        "punEstaciones",
-        punEstaciones,
-        "punOjbetivos",
-        punObjetivos
-      );
+      // console.log(
+      //   "puntosVagones",
+      //   puntosVagones,
+      //   "punEstaciones",
+      //   punEstaciones,
+      //   "punOjbetivos",
+      //   punObjetivos
+      // );
       return puntosTotales;
     },
 
     addObjetivo(jugador, num_objetivo, cantidad){
       const objetivos = this.clasificacion[jugador].objetivos;
-      console.log("jugador", jugador , "objetivos", objetivos , "cantidad", cantidad,)
       objetivos[num_objetivo] = cantidad;
     },
 
-    sumarObjetivos(jugador){
-      const objetivos = this.clasificacion[jugador].objetivos;
-      let total = 0;
-      for (let objetivo of objetivos) {
-        total += objetivo;
-      }
-      return total;
-    },
 
-    getAll() {
-      console.log(this.clasificacion);
-    },
     getPuntuacionJugador(jugador) {
       return jugadores[jugador].puntos;
     },

@@ -15,7 +15,7 @@
       >
       </Input>
 
-      <p>{{vagonesFaltan}} vagones sin usar</p>
+      <p class="vagonesSinUsar">{{vagonesFaltan}} vagones sin usar</p>
     </div>
 
     <hr />
@@ -48,7 +48,7 @@ import Input from "@/components/Input.vue";
 import InputEstaciones from "@/components/InputEstaciones.vue";
 import InputObjetivos from "@/components/InputObjetivos.vue";
 
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useStore } from "@/stores/store";
 
 const store = useStore();
@@ -68,6 +68,14 @@ const puntosTotal = ref(0);
 const vagonesFaltan = ref(45);
 const numObjetivos = ref(3);
 
+const  colorSinUsar = computed(()=>{
+  if (vagonesFaltan.value < 0){
+    return "red";
+  }
+  return "black";
+})
+
+
 
 
 const mostrarTotal = () => {
@@ -80,7 +88,6 @@ const inputs = [
   { num_vagones: 2, puntos: 2 },
   { num_vagones: 3, puntos: 4 },
   { num_vagones: 4, puntos: 7 },
-  { num_vagones: 5, puntos: 10 },
   { num_vagones: 6, puntos: 15 },
   { num_vagones: 8, puntos: 21 },
 ];
@@ -95,10 +102,14 @@ const aumentarNumeroObjetivos =() => {
 <style lang="scss">
 .jugador {
   border: 3px solid v-bind(color);
-  width: min-content;
-  padding: 1rem;
-}
 
+  width: min(350px, 100%);
+  padding: 1rem;
+  border-radius: 15px;
+}
+.vagonesSinUsar{
+   color: v-bind(colorSinUsar); 
+}
 hr {
   margin: 0.5rem;
 }

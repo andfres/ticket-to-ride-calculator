@@ -1,25 +1,31 @@
 <template>
   <div>
-    <label class="label">
+    <div class="label">
       <div class="info">
         <span>{{ label }}</span>
         <span>({{ puntos }} pts)</span>
       </div>
-
-      <input type="number" 
+      
+      <button @click="disminuir">-</button>
+      <input 
+        ref="input"
+        type="number" 
         v-model="cantidad"
         @change="actualizarPuntos"
         step="1" min="0" :max="max"
-        
       />
+
+      <button @click="aumentar">+</button>
+
+
       <div class="total">{{ total }}</div>
-    </label>
+    </div>
   </div>
 </template>
 
 <script setup>
 import Input from "@/components/Input.vue";
-import { ref } from "vue";
+import { ref , onMounted} from "vue";
 import { computed } from "vue";
 import { useStore} from "@/stores/store";
 const emit = defineEmits(['inFocus', 'submit'])
@@ -35,9 +41,11 @@ const props = defineProps({
 
 const cantidad = ref(0);
 
+
 const total = computed(() => {
   return props.puntos * cantidad.value;
-});
+  //return props.puntos * input.value.value;
+})
 
 const max = computed(() => {
   if (props.num_vagones === 8 ) {
@@ -60,10 +68,25 @@ const actualizarPuntos = () => {
   emit('someEvent', "nada")
 };
 
+const input = ref(null)
+
+const aumentar = () => {
+  if (cantidad.value < max.value){
+    cantidad.value ++
+    actualizarPuntos()
+  }
+}
+const disminuir = () => {
+  if (cantidad.value >= 1){
+    cantidad.value --
+    actualizarPuntos()
+  }
+}
 
 </script>
 
 <style lang="scss" >
+
 .label {
   display: flex;
   gap: 10px;
@@ -75,6 +98,9 @@ const actualizarPuntos = () => {
     width: 150px;
     display: flex;
     --flex-direction: column;
+    gap: 5px;
+    flex-wrap: wrap;
+    
     
   }
 
