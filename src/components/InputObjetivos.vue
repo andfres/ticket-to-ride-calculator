@@ -32,7 +32,6 @@ import { ref } from "vue";
 import { computed } from "vue";
 import { useStore } from "@/stores/store";
 
- const emit = defineEmits(["inFocus", "submit"]);
 
 const store = useStore();
 const { addObjetivo } = store;
@@ -54,7 +53,6 @@ const label = computed(() => {
 
 const actualizarPuntos = () => {
   addObjetivo(props.jugador_id, props.num_objetivo, puntos.value);
-   emit("someEvent");
 };
 
 const input = ref(null);

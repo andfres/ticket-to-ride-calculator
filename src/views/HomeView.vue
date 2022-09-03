@@ -1,12 +1,6 @@
-
-
 <template>
   <main>
 
-    <!-- <label>
-          <span>Número de jugadores</span>
-          <input type="number">
-    </label> -->
     <h1>Calculadora</h1>
     <h1>!Aventureros al Tren! Europa </h1>
     
@@ -16,8 +10,8 @@
       <ContadorJugador 
         v-for="(item, i) in jugadores" 
         :key="i"
-        :color="colors[i]"
-        :jugador="i" >
+        :jugador= "item"
+      >
       </ContadorJugador>
 
     </div>
@@ -27,21 +21,18 @@
       <p>https://github.com/andfres</p>
     </footer>
 
-
-    <!-- <Clasificacion></Clasificacion> -->
   </main>
 
 </template>
 
 <script setup>
+
 import ContadorJugador from '@/components/ContadorJugador.vue'
-import Clasificacion from '@/components/Clasificacion.vue'
-import { ref } from 'vue';
+import { useStore } from "@/stores/store";
+import { storeToRefs } from "pinia";
 
-const jugadores = 5;
-
-const colors = ["#ff0000", "#0015ff", "#fbff00", "#00ff00", "#000000" ]
-//rojo , azul, amarillo, verde, negro
+const { jugadores } = useStore();
+//const { jugadores } = storeToRefs(useStore());
 
 </script>
 

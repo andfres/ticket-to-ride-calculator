@@ -25,12 +25,11 @@
 </template>
 
 <script setup>
-import Input from "@/components/Input.vue";
+
 import { ref } from "vue";
 import { computed } from "vue";
 import { useStore } from "@/stores/store";
 
-const emit = defineEmits(["inFocus", "submit"]);
 
 const store = useStore();
 const { actualizarPuntuacionEstaciones } = store;
@@ -49,7 +48,6 @@ const total = computed(() => {
 
 const actualizarPuntos = () => {
   actualizarPuntuacionEstaciones(props.jugador_id, total.value);
-  emit("someEvent");
 };
 
 const input = ref(null);

@@ -1,115 +1,102 @@
 <template>
   <div class="jugador">
-    <!-- <h3 class="nombre">Jugador {{ jugador }}</h3> -->
 
-    <input type="text" v-model="nombreJugador">
-    <hr />
+    <input type="text" v-model="jugador.nombre">
+    
     <div>
-      <Input 
-        @some-event="mostrarTotal"
-        v-for="(item, i) in inputs"
+    
+      <InputVagon 
+        v-for="(ele, i) in vagones"
         :key="i"
-        v-bind="item"
-        :jugador_id="jugador"
-        :id_vagon="i"
+        :vagon="ele"
+        :jugadorId = "jugador.id"
       >
-      </Input>
-
-      <p class="vagonesSinUsar">{{vagonesFaltan}} vagones sin usar</p>
+      </InputVagon>
+  
     </div>
 
-    <hr />
+
+    <!--
+    <p class="vagonesSinUsar">{{vagonesSinUsar}} vagones sin usar</p>
+  <p class="vagonesSinUsar">{{vagonesFaltan}} vagones sin usar</p>
+
     <InputEstaciones 
-      @some-event="mostrarTotal"
       :jugador_id="jugador">
     </InputEstaciones>
 
-    <hr />
     <InputObjetivos
-      @some-event="mostrarTotal"
       v-for="(item, i) in numObjetivos"
       :key="i"
       :num_objetivo="i"
       :vagon-id="i"
-      :jugador_id="jugador">
+      :jugador_id="i">
     </InputObjetivos>
 
     <button @click="aumentarNumeroObjetivos">Añadir objetivo</button>
-
-    <hr />
-
-    <!-- <button @click="mostrarTotal">Mostrar total</button> -->
     <p>total: {{ puntosTotal }}</p>
+    -->
+    
   </div>
 </template>
 
 <script setup>
-import Input from "@/components/Input.vue";
-import InputEstaciones from "@/components/InputEstaciones.vue";
-import InputObjetivos from "@/components/InputObjetivos.vue";
+
+import InputVagon from "@/components/InputVagon.vue";
+// import InputEstaciones from "@/components/InputEstaciones.vue";
+// import InputObjetivos from "@/components/InputObjetivos.vue";
 
 import { ref, computed } from "vue";
 import { useStore } from "@/stores/store";
 
-const store = useStore();
-const { sumarTotalPuntos, sumarPuntosCantidades } = store;
+
 
 const props = defineProps({
-  jugador: Number,
-
-  color: {
-    type: String,
-    default: "#ff0000",
-  },
+  jugador: Object,
 });
 
-const nombreJugador = ref("Jugador " + (props.jugador + 1));
-const puntosTotal = ref(0);
-const vagonesFaltan = ref(45);
-const numObjetivos = ref(3);
+const vagones = props.jugador.vagones;
+const color = props.jugador.color;
 
-const  colorSinUsar = computed(()=>{
-  if (vagonesFaltan.value < 0){
-    return "red";
-  }
-  return "black";
-})
+console.log(vagones);
 
+// const vagonesSinUsar = computed(()=>{
+//   return 45 - props.jugador.vagonesUsados;
+// })
 
+//const vagonesFaltan = ref(45);
+// const numObjetivos = ref(3);
 
-
-const mostrarTotal = () => {
-  puntosTotal.value = sumarTotalPuntos(props.jugador);
-  vagonesFaltan.value = 45 - sumarPuntosCantidades(props.jugador)
-};
-
-const inputs = [
-  { num_vagones: 1, puntos: 1 },
-  { num_vagones: 2, puntos: 2 },
-  { num_vagones: 3, puntos: 4 },
-  { num_vagones: 4, puntos: 7 },
-  { num_vagones: 6, puntos: 15 },
-  { num_vagones: 8, puntos: 21 },
-];
+// const  colorVagonesSinUsar = computed(()=>{
+//   if (vagonesFaltan.value < 0){
+//     return "red";
+//   }
+//   return "black";
+// })
 
 
 
-const aumentarNumeroObjetivos =() => {
-  numObjetivos.value ++
-}
+
+// const mostrarTotal = () => {
+//   puntosTotal.value = sumarTotalPuntos(props.jugador);
+//   vagonesFaltan.value = 45 - sumarPuntosCantidades(props.jugador)
+// };
+
+
+
+
 </script> 
 
 <style lang="scss">
 .jugador {
+  //border: 3px solid red;
   border: 3px solid v-bind(color);
-
   width: min(350px, 100%);
   padding: 1rem;
   border-radius: 15px;
 }
-.vagonesSinUsar{
-   color: v-bind(colorSinUsar); 
-}
+// .vagonesSinUsar{
+//    color: v-bind(colorVagonesSinUsar); 
+// }
 hr {
   margin: 0.5rem;
 }
