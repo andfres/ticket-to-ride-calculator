@@ -1,7 +1,9 @@
 <template>
   <div>
-    <!-- usando label da problemas
-    clicar en el label es como apretar el boton - -->
+
+<!-- fALTA DE METER LOS OBJETIVOS -->
+
+
     <div class="label">
       <div class="info">
         <span>{{ label }}</span>
@@ -32,28 +34,20 @@ import { ref } from "vue";
 import { computed } from "vue";
 import { useStore } from "@/stores/store";
 
-
-const store = useStore();
-const { addObjetivo } = store;
+const { sumarObjetivo } = useStore();
 
 const max = 50;
 const puntos = ref(0);
 const props = defineProps({
-  num_objetivo: {
-    type: Number,
-    default: 1,
-  },
-  vagon_id: Number,
-  jugador_id: Number,
+  num_objetivo:  Number,
+  jugador: Object,
 });
 
 const label = computed(() => {
   return "objetivo" + (props.num_objetivo + 1);
 });
 
-const actualizarPuntos = () => {
-  addObjetivo(props.jugador_id, props.num_objetivo, puntos.value);
-};
+
 
 const input = ref(null);
 

@@ -4,29 +4,51 @@ export const useStore = defineStore({
   id: "main",
   state: () => ({
     jugadores: [
-      { id: 0, nombre: "Jugador 1", color: "#ff0000", vagones: crearVagones(), vagonesUsados:0, puntosEstaciones: 0, objetivos: [], puntosTotales: 0},
-      { id: 1, nombre: "Jugador 2", color: "#0015ff", vagones: crearVagones(), vagonesUsados:0, puntosEstaciones: 0, objetivos: [], puntosTotales: 0},
-      { id: 2, nombre: "Jugador 3", color: "#fbff00", vagones: crearVagones(), vagonesUsados:0, puntosEstaciones: 0, objetivos: [], puntosTotales: 0},
-      { id: 3, nombre: "Jugador 4", color: "#00ff00", vagones: crearVagones(), vagonesUsados:0, puntosEstaciones: 0, objetivos: [], puntosTotales: 0},
-      { id: 4, nombre: "Jugador 5", color: "#000000", vagones: crearVagones(), vagonesUsados:0, puntosEstaciones: 0, objetivos: [], puntosTotales: 0},
+      { id: 0, nombre: "Jugador 1", color: "#ff0000", vagones: crearVagones(), puntosVagones: 0, vagonesUsados:0, cantidadEstaciones: 0, puntosEstaciones: 0, objetivos: [], puntosTotales: 0},
+      { id: 1, nombre: "Jugador 2", color: "#0015ff", vagones: crearVagones(), puntosVagones: 0, vagonesUsados:0, cantidadEstaciones: 0, puntosEstaciones: 0, objetivos: [], puntosTotales: 0},
+      { id: 2, nombre: "Jugador 3", color: "#fbff00", vagones: crearVagones(), puntosVagones: 0, vagonesUsados:0, cantidadEstaciones: 0, puntosEstaciones: 0, objetivos: [], puntosTotales: 0},
+      { id: 3, nombre: "Jugador 4", color: "#00ff00", vagones: crearVagones(), puntosVagones: 0, vagonesUsados:0, cantidadEstaciones: 0, puntosEstaciones: 0, objetivos: [], puntosTotales: 0},
+      { id: 4, nombre: "Jugador 5", color: "#000000", vagones: crearVagones(), puntosVagones: 0, vagonesUsados:0, cantidadEstaciones: 0, puntosEstaciones: 0, objetivos: [], puntosTotales: 0},
     ]
   }),
 
 
     actions: {
 
-      addVagon(jugadoriD, vagoniD) {
-        const vagon = this.jugadores[jugadoriD].vagones[vagoniD]; 
-        vagon.puntosTotales += vagon.puntos;
-        vagon.cantidad += 1;
-       //this.jugadores[jugador].puntosTotales += vagon.puntos;
-    },
-
-      quitarVagon(jugadoriD, vagoniD) {
-        const vagon = this.jugadores[jugadoriD].vagones[vagoniD];
+      quitarVagon(jugadorId, vagoniD) {
+        const jugador = this.jugadores[jugadorId];
+        const vagon = jugador.vagones[vagoniD]; 
         vagon.puntosTotales -= vagon.puntos;
         vagon.cantidad -= 1;
-      //this.jugadores[jugador].puntosTotales += vagon.puntos;
+        jugador.vagonesUsados -= vagon.num_vagones;
+        jugador.puntosVagones -= vagon.puntos;
+        jugador.puntosTotales -= vagon.puntos;
+    },
+
+      addVagon(jugadorId, vagoniD) {
+        const jugador = this.jugadores[jugadorId];
+        const vagon = jugador.vagones[vagoniD]; 
+        vagon.puntosTotales += vagon.puntos;
+        vagon.cantidad += 1;
+        jugador.vagonesUsados += vagon.num_vagones;
+
+        jugador.puntosVagones += vagon.puntos;
+        jugador.puntosTotales += vagon.puntos;
+    },
+      
+
+    disminuirEstaciones(jugadorId) {
+      const jugador = this.jugadores[jugadorId];
+      jugador.cantidadEstaciones -= 1;
+      jugador.puntosEstaciones -= 4;
+      jugador.puntosTotales -= 4;
+    },
+  
+    aumentarEstaciones(jugadorId){
+      const jugador = this.jugadores[jugadorId];
+      jugador.cantidadEstaciones += 1;
+      jugador.puntosEstaciones += 4;
+      jugador.puntosTotales += 4;
     },
 
 

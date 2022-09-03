@@ -2,70 +2,63 @@
   <div>
     <div class="label">
       <div class="info">
-        <span>{{ label }}</span>
-        <span>({{ puntos }} pts)</span>
+        <span>estaciones</span>
+        <span>(4 pts)</span>
       </div>
 
       <button @click="disminuir">-</button>
 
       <input
-       ref="input"
+        ref="input"
         type="number"
-        v-model="cantidad"
-        @change="actualizarPuntos"
-        step="1"
-        min="0"
-        :max="max"
+        :value="props.jugador.cantidadEstaciones"
       />
       <button @click="aumentar">+</button>
 
-      <div class="total">{{ total }}</div>
+      <div class="total">{{ jugador.puntosEstaciones }}</div>
     </div>
   </div>
 </template>
 
 <script setup>
-
-import { ref } from "vue";
 import { computed } from "vue";
 import { useStore } from "@/stores/store";
 
-
 const store = useStore();
-const { actualizarPuntuacionEstaciones } = store;
+const { disminuirEstaciones, aumentarEstaciones } = store;
 
 const props = defineProps({
-  jugador_id: Number,
+  jugador: Object,
 });
 
-const cantidad = ref(0);
-const puntos = 4;
 const max = 3;
 
-const total = computed(() => {
-  return puntos * cantidad.value;
-});
-
-const actualizarPuntos = () => {
-  actualizarPuntuacionEstaciones(props.jugador_id, total.value);
+const disminuir = () => {
+  if (props.jugador.cantidadEstaciones >= 1) {
+    disminuirEstaciones(props.jugador.id);
+  }
 };
 
-const input = ref(null);
 const aumentar = () => {
-  if (cantidad.value < max){
-    cantidad.value ++
-    actualizarPuntos()
+  if (props.jugador.cantidadEstaciones < max) {
+  
+    aumentarEstaciones(props.jugador.id);
   }
-}
-const disminuir = () => {
-  if (cantidad.value >= 1){
-    cantidad.value --
-    actualizarPuntos()
-  }
-}
+};
+
+// const aumentar = () => {
+//   if (props.vagon.cantidad < max.value) {
+//     addVagon(props.jugadorId, props.vagon.id);
+//   }
+// };
+
+// const disminuir = () => {
+//   if (props.vagon.cantidad >= 1) {
+//     quitarVagon(props.jugadorId, props.vagon.id);
+//   }
+// };
 
 const label = "num estaciones";
 </script>
 
-<style lang="scss"  >
-</style>
+<style lang="scss"></style>
