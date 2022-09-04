@@ -79,7 +79,7 @@ export const useStore = defineStore({
 
     addObjetivos(jugadorId){
       const jugador = this.jugadores[jugadorId];
-      jugador.objetivos.push(0);
+      jugador.objetivos.push(jugadorId);
     },
 
     actualizarPuntosObjetivo(jugadorId, objetivoId, puntos){
