@@ -81,7 +81,7 @@ const colorVagonesSinUsar = computed(() => {
 });
 
 const aumentarNumeroObjetivos = () => {
-  addObjetivos(0);
+  addObjetivos(props.jugador.id);
 };
 </script>
 
