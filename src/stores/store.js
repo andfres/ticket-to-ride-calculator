@@ -4,20 +4,46 @@ export const useStore = defineStore({
   id: "main",
   state: () => ({
     jugadores: [
-      { id: 0, nombre: "Jugador 1", color: "#ff0000", vagones: crearVagones(), puntosVagones: 0, vagonesUsados:0, cantidadEstaciones: 0, puntosEstaciones: 0, objetivos: [], puntosTotales: 0},
-      { id: 1, nombre: "Jugador 2", color: "#0015ff", vagones: crearVagones(), puntosVagones: 0, vagonesUsados:0, cantidadEstaciones: 0, puntosEstaciones: 0, objetivos: [], puntosTotales: 0},
-      { id: 2, nombre: "Jugador 3", color: "#fbff00", vagones: crearVagones(), puntosVagones: 0, vagonesUsados:0, cantidadEstaciones: 0, puntosEstaciones: 0, objetivos: [], puntosTotales: 0},
-      { id: 3, nombre: "Jugador 4", color: "#00ff00", vagones: crearVagones(), puntosVagones: 0, vagonesUsados:0, cantidadEstaciones: 0, puntosEstaciones: 0, objetivos: [], puntosTotales: 0},
-      { id: 4, nombre: "Jugador 5", color: "#000000", vagones: crearVagones(), puntosVagones: 0, vagonesUsados:0, cantidadEstaciones: 0, puntosEstaciones: 0, objetivos: [], puntosTotales: 0},
+      { id: 0, nombre: "Jugador 1", color: "#ff0000", vagones: crearVagones(), puntosVagones: 0, vagonesUsados:0, cantidadEstaciones: 0, puntosEstaciones: 0, objetivos: Array(3).fill(0), puntosTotales: 0},
+      { id: 1, nombre: "Jugador 2", color: "#0015ff", vagones: crearVagones(), puntosVagones: 0, vagonesUsados:0, cantidadEstaciones: 0, puntosEstaciones: 0, objetivos: Array(3).fill(0), puntosTotales: 0},
+      { id: 2, nombre: "Jugador 3", color: "#fbff00", vagones: crearVagones(), puntosVagones: 0, vagonesUsados:0, cantidadEstaciones: 0, puntosEstaciones: 0, objetivos: Array(3).fill(0), puntosTotales: 0},
+      { id: 3, nombre: "Jugador 4", color: "#00ff00", vagones: crearVagones(), puntosVagones: 0, vagonesUsados:0, cantidadEstaciones: 0, puntosEstaciones: 0, objetivos: Array(3).fill(0), puntosTotales: 0},
+      { id: 4, nombre: "Jugador 5", color: "#000000", vagones: crearVagones(), puntosVagones: 0, vagonesUsados:0, cantidadEstaciones: 0, puntosEstaciones: 0, objetivos: Array(3).fill(0), puntosTotales: 0},
     ]
   }),
 
 
+  getters: {
+    calcularTotal: (state) => {
+      return (jugadorId) => {
+        const jugador = state.jugadores[jugadorId];
+
+        let puntosTotalesObjetivos = 0;
+
+        // toDo mirar como hacer con reducer
+        jugador.objetivos.map(objetivo => {
+          puntosTotalesObjetivos += objetivo;
+        }) 
+        return jugador.puntosVagones + jugador.puntosEstaciones + puntosTotalesObjetivos;
+        
+      } 
+    },
+
+    // prueba: (state) => {
+    //   return "pruebageter"
+    // },
+
+    // prueba2: (state) => {
+    //   return (parametro) => { return parametro }
+    // }
+
+
+  },
     actions: {
 
-      quitarVagon(jugadorId, vagoniD) {
+      quitarVagon(jugadorId, vagonId) {
         const jugador = this.jugadores[jugadorId];
-        const vagon = jugador.vagones[vagoniD]; 
+        const vagon = jugador.vagones[vagonId]; 
         vagon.puntosTotales -= vagon.puntos;
         vagon.cantidad -= 1;
         jugador.vagonesUsados -= vagon.num_vagones;
@@ -25,9 +51,9 @@ export const useStore = defineStore({
         jugador.puntosTotales -= vagon.puntos;
     },
 
-      addVagon(jugadorId, vagoniD) {
+      addVagon(jugadorId, vagonId) {
         const jugador = this.jugadores[jugadorId];
-        const vagon = jugador.vagones[vagoniD]; 
+        const vagon = jugador.vagones[vagonId]; 
         vagon.puntosTotales += vagon.puntos;
         vagon.cantidad += 1;
         jugador.vagonesUsados += vagon.num_vagones;
@@ -51,10 +77,15 @@ export const useStore = defineStore({
       jugador.puntosTotales += 4;
     },
 
+    addObjetivos(jugadorId){
+      const jugador = this.jugadores[jugadorId];
+      jugador.objetivos.push(0);
+    },
 
-
- 
-
+    actualizarPuntosObjetivo(jugadorId, objetivoId, puntos){
+      const jugador = this.jugadores[jugadorId];
+      jugador.objetivos[objetivoId] = puntos;
+    },
 
     addObjetivo(jugador, num_objetivo, cantidad) {
       const objetivos = this.jugadores[jugador].objetivos;

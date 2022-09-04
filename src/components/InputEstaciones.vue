@@ -12,6 +12,7 @@
         ref="input"
         type="number"
         :value="props.jugador.cantidadEstaciones"
+        readonly
       />
       <button @click="aumentar">+</button>
 

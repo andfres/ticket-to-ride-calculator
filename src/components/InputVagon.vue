@@ -7,7 +7,7 @@
       </div>
 
       <button @click="disminuir">-</button>
-      <input ref="input" type="number" v-model="vagon.cantidad" />
+      <input ref="input" type="number" v-model="vagon.cantidad" readonly />
 
       <button @click="aumentar">+</button>
       
