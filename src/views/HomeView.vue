@@ -2,7 +2,7 @@
   <main>
 
     <h1>Calculadora</h1>
-    <h1>!Aventureros al Tren! Europa </h1>
+    <h1>¡Aventureros al Tren!</h1>
     
 
     <div class="jugadores">

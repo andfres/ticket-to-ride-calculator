@@ -30,10 +30,9 @@
     <button @click="aumentarNumeroObjetivos">Añadir objetivo</button>
     <hr />
 
-    <!-- <p>total: {{ jugador.puntosTotales }}</p> -->
-
-    <button @click="handelCalcularTotal">{{total}}</button>
-
+    <!-- <button @click="handelCalcularTotal">{{total2}}</button>  -->
+    
+    <p>total {{ total }}</p>
     
   </div>
 </template>
@@ -43,27 +42,32 @@ import InputVagon from "@/components/InputVagon.vue";
 import InputEstaciones from "@/components/InputEstaciones.vue";
 import InputObjetivo from "@/components/InputObjetivo.vue";
 
-import { ref, computed } from "vue";
+import { ref, computed , watch } from "vue";
 import { useStore } from "@/stores/store";
 
-const { addObjetivos , calcularTotal } = useStore();
-
-const total = ref("calular total")
-
-const handelCalcularTotal = () => {
-  total.value = calcularTotal(0);
-}
-
-
+const { jugadores, addObjetivos , calcularTotal } = useStore();
 
 const props = defineProps({
   jugador: Object,
 });
 
+const total2 = ref("calular total")
+const total = ref(0)
+
+
+const handelCalcularTotal = () => {
+  total.value = calcularTotal(props.jugador.id);
+}
+
+
+watch(jugadores, () => {
+  console.log("cambio")
+  total.value = calcularTotal(props.jugador.id);
+});
+
 const vagones = props.jugador.vagones;
 const color = props.jugador.color;
 
-console.log(vagones);
 
 const vagonesSinUsar = computed(() => {
   return 45 - props.jugador.vagonesUsados;

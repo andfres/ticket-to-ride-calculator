@@ -48,7 +48,7 @@ export const useStore = defineStore({
         vagon.cantidad -= 1;
         jugador.vagonesUsados -= vagon.num_vagones;
         jugador.puntosVagones -= vagon.puntos;
-        jugador.puntosTotales -= vagon.puntos;
+        //jugador.puntosTotales -= vagon.puntos;
     },
 
       addVagon(jugadorId, vagonId) {
@@ -59,7 +59,7 @@ export const useStore = defineStore({
         jugador.vagonesUsados += vagon.num_vagones;
 
         jugador.puntosVagones += vagon.puntos;
-        jugador.puntosTotales += vagon.puntos;
+        //jugador.puntosTotales += vagon.puntos;
     },
       
 
@@ -67,14 +67,14 @@ export const useStore = defineStore({
       const jugador = this.jugadores[jugadorId];
       jugador.cantidadEstaciones -= 1;
       jugador.puntosEstaciones -= 4;
-      jugador.puntosTotales -= 4;
+      //jugador.puntosTotales -= 4;
     },
   
     aumentarEstaciones(jugadorId){
       const jugador = this.jugadores[jugadorId];
       jugador.cantidadEstaciones += 1;
       jugador.puntosEstaciones += 4;
-      jugador.puntosTotales += 4;
+      //jugador.puntosTotales += 4;
     },
 
     addObjetivos(jugadorId){
