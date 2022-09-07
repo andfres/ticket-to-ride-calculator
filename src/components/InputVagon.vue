@@ -7,7 +7,7 @@
       </div>
 
       <button class="button" @click="disminuir">-</button>
-      <input ref="input" type="number" v-model="vagon.cantidad" readonly />
+      <input class="smallInput" ref="input" type="number" v-model="vagon.cantidad" readonly />
 
       <button class="button" @click="aumentar">+</button>
       
@@ -57,8 +57,14 @@ const disminuir = () => {
 
 .button {
     padding: 10px;
-    border-radius: 10px;
-  }
+    border-radius: 5px;
+    border: 1px solid #000;
+}
+
+.smallInput{
+  text-align: right; 
+
+}
 
 .label {
   display: flex;
@@ -66,6 +72,7 @@ const disminuir = () => {
 
   input {
     width: 40px;
+
   }
   .info {
     width: 150px;

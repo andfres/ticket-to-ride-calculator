@@ -1,5 +1,5 @@
 <template>
-  <div class="jugador">
+  <div v-if="jugador.visible" class="jugador">
     <input type="text" v-model="jugador.nombre" />
 
     <div>
@@ -30,7 +30,6 @@
     <button @click="aumentarNumeroObjetivos">Añadir objetivo</button>
     <hr />
 
-    <!-- <button @click="handelCalcularTotal">{{total2}}</button>  -->
     
     <p>total {{ total }}</p>
     
@@ -53,7 +52,6 @@ const props = defineProps({
   jugador: Object,
 });
 
-const total2 = ref("calular total")
 const total = ref(0)
 
 
@@ -88,6 +86,8 @@ const aumentarNumeroObjetivos = () => {
 </script>
 
 <style lang="scss">
+
+
 .jugador {
   //border: 3px solid red;
   border: 3px solid v-bind(color);

@@ -87,10 +87,14 @@ export const useStore = defineStore({
       jugador.objetivos[objetivoId] = puntos;
     },
 
-    addObjetivo(jugador, num_objetivo, cantidad) {
-      const objetivos = this.jugadores[jugador].objetivos;
+    addObjetivo(jugadorId, num_objetivo, cantidad) {
+      const objetivos = this.jugadores[jugadorId].objetivos;
       objetivos[num_objetivo] = cantidad;
     },
+
+    toggleVisible(jugadorId) {
+      this.jugadores[jugadorId].visible = !this.jugadores[jugadorId].visible;
+    }
 
   }, //fin actions
 });

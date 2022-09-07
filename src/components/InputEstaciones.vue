@@ -9,6 +9,7 @@
       <button class="button" @click="disminuir">-</button>
 
       <input
+        class="smallInput"
         ref="input"
         type="number"
         :value="props.jugador.cantidadEstaciones"
