@@ -26,3 +26,5 @@ los datos los puntos y vagones ahora se repiten en cada jugador , extraer
 
 el watch se hace dentro de contador jugador y se ejecuta 1 pro cada componente
 probar a hacerlo en la propia store
+
+check colores va en el home view

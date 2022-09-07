@@ -6,10 +6,10 @@
         <span>({{ vagon.puntos }} pts)</span>
       </div>
 
-      <button @click="disminuir">-</button>
+      <button class="button" @click="disminuir">-</button>
       <input ref="input" type="number" v-model="vagon.cantidad" readonly />
 
-      <button @click="aumentar">+</button>
+      <button class="button" @click="aumentar">+</button>
       
       <div class="total">{{ vagon.puntosTotales }}</div>
     </div>
@@ -54,6 +54,12 @@ const disminuir = () => {
 </script>
 
 <style lang="scss">
+
+.button {
+    padding: 10px;
+    border-radius: 10px;
+  }
+
 .label {
   display: flex;
   gap: 10px;
@@ -67,6 +73,7 @@ const disminuir = () => {
     gap: 5px;
     flex-wrap: wrap;
   }
+
 
   .total {
     width: 30px;

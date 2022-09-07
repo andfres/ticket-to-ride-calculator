@@ -6,7 +6,7 @@
         <span>(4 pts)</span>
       </div>
 
-      <button @click="disminuir">-</button>
+      <button class="button" @click="disminuir">-</button>
 
       <input
         ref="input"
@@ -14,7 +14,7 @@
         :value="props.jugador.cantidadEstaciones"
         readonly
       />
-      <button @click="aumentar">+</button>
+      <button class="button" @click="aumentar">+</button>
 
       <div class="total">{{ jugador.puntosEstaciones }}</div>
     </div>

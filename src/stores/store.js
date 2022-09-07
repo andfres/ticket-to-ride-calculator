@@ -4,11 +4,11 @@ export const useStore = defineStore({
   id: "main",
   state: () => ({
     jugadores: [
-      { id: 0, nombre: "Jugador 1", color: "#ff0000", vagones: crearVagones(), puntosVagones: 0, vagonesUsados:0, cantidadEstaciones: 0, puntosEstaciones: 0, objetivos: Array(3).fill(0), puntosTotales: 0},
-      { id: 1, nombre: "Jugador 2", color: "#0015ff", vagones: crearVagones(), puntosVagones: 0, vagonesUsados:0, cantidadEstaciones: 0, puntosEstaciones: 0, objetivos: Array(3).fill(0), puntosTotales: 0},
-      { id: 2, nombre: "Jugador 3", color: "#fbff00", vagones: crearVagones(), puntosVagones: 0, vagonesUsados:0, cantidadEstaciones: 0, puntosEstaciones: 0, objetivos: Array(3).fill(0), puntosTotales: 0},
-      { id: 3, nombre: "Jugador 4", color: "#00ff00", vagones: crearVagones(), puntosVagones: 0, vagonesUsados:0, cantidadEstaciones: 0, puntosEstaciones: 0, objetivos: Array(3).fill(0), puntosTotales: 0},
-      { id: 4, nombre: "Jugador 5", color: "#000000", vagones: crearVagones(), puntosVagones: 0, vagonesUsados:0, cantidadEstaciones: 0, puntosEstaciones: 0, objetivos: Array(3).fill(0), puntosTotales: 0},
+      { id: 0, nombre: "Jugador 1", color: "#ff0000", visible:true, vagones: crearVagones(), puntosVagones: 0, vagonesUsados:0, cantidadEstaciones: 0, puntosEstaciones: 0, objetivos: Array(3).fill(0), puntosTotales: 0},
+      { id: 1, nombre: "Jugador 2", color: "#0015ff", visible:false, vagones: crearVagones(), puntosVagones: 0, vagonesUsados:0, cantidadEstaciones: 0, puntosEstaciones: 0, objetivos: Array(3).fill(0), puntosTotales: 0},
+      { id: 2, nombre: "Jugador 3", color: "#fbff00", visible:true, vagones: crearVagones(), puntosVagones: 0, vagonesUsados:0, cantidadEstaciones: 0, puntosEstaciones: 0, objetivos: Array(3).fill(0), puntosTotales: 0},
+      { id: 3, nombre: "Jugador 4", color: "#00ff00", visible:true, vagones: crearVagones(), puntosVagones: 0, vagonesUsados:0, cantidadEstaciones: 0, puntosEstaciones: 0, objetivos: Array(3).fill(0), puntosTotales: 0},
+      { id: 4, nombre: "Jugador 5", color: "#000000", visible:false, vagones: crearVagones(), puntosVagones: 0, vagonesUsados:0, cantidadEstaciones: 0, puntosEstaciones: 0, objetivos: Array(3).fill(0), puntosTotales: 0},
     ]
   }),
 

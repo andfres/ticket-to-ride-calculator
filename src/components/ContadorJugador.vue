@@ -38,12 +38,14 @@
 </template>
 
 <script setup>
+
 import InputVagon from "@/components/InputVagon.vue";
 import InputEstaciones from "@/components/InputEstaciones.vue";
 import InputObjetivo from "@/components/InputObjetivo.vue";
 
 import { ref, computed , watch } from "vue";
 import { useStore } from "@/stores/store";
+import CheckColor from "./CheckColor.vue";
 
 const { jugadores, addObjetivos , calcularTotal } = useStore();
 
