@@ -9,7 +9,7 @@ Versión node -> >16.14.1
 [x] arreglar APP
 [] calcular total con watcher
 
-[] instalar slint
+[x] instalar slint
 [] instalar snipets "html"
 
 # apuntes
