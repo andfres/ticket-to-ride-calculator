@@ -6,8 +6,6 @@
 			</div>
 
 			<input ref="input" type="number" :value="objetivoPuntos" @change="actualizarPuntos" />
-			<!--v-model="objetivoPuntos"
-                  <div class="total">{{ total }}</div> -->
 		</div>
 	</div>
 </template>

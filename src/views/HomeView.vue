@@ -3,12 +3,21 @@
 		<h1>Calculadora</h1>
 		<h1>¡Aventureros al Tren!</h1>
 
+		<div class="selector-modo">
+			<label for="modo">Modelo de juego: </label>
+			<select id="modo" :value="gameMode" @change="(e) => setGameMode(e.target.value)">
+				<option value="europe">Europe</option>
+				<option value="amsterdam">Amsterdam</option>
+			</select>
+		</div>
+
 		<div class="checks">
-			<CheckColor v-for="(item, i) in jugadores" :key="i" :jugador="item"></CheckColor>
+			<CheckColor v-for="(item, i) in jugadores" :key="gameMode + i" :jugador="item"></CheckColor>
 		</div>
 
 		<div class="jugadores">
-			<ContadorJugador v-for="(item, i) in jugadores" :key="i" :jugador="item"> </ContadorJugador>
+			<ContadorJugador v-for="(item, i) in jugadores" :key="gameMode + i" :jugador="item">
+			</ContadorJugador>
 		</div>
 
 		<footer>
@@ -22,9 +31,11 @@
 import CheckColor from "@/components/CheckColor.vue";
 import ContadorJugador from "@/components/ContadorJugador.vue";
 import { useStore } from "@/stores/store";
+import { storeToRefs } from "pinia";
 
-const { jugadores } = useStore();
-//const { jugadores } = storeToRefs(useStore());
+const store = useStore();
+const { jugadores, gameMode } = storeToRefs(store);
+const { setGameMode } = store;
 </script>
 
 <style lang="scss">
@@ -41,12 +52,26 @@ main {
 	background-color: beige;
 	border: 1px solid red;
 
+	.selector-modo {
+		text-align: center;
+		margin: 1rem 0;
+		font-family: "Neucha", cursive;
+		font-size: 1.2rem;
+
+		select {
+			padding: 5px;
+			border-radius: 5px;
+			font-family: inherit;
+		}
+	}
+
 	.checks {
 		background-color: azure;
 		padding: 1rem;
 		border: 1rem;
 		display: flex;
 		gap: 2rem;
+		justify-content: center;
 	}
 
 	h1 {

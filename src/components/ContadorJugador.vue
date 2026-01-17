@@ -10,9 +10,10 @@
 			<p>Puntos vagones {{ jugador.puntosVagones }}</p>
 		</div>
 
-		<hr />
-
-		<InputEstaciones :jugador="jugador"></InputEstaciones>
+		<template v-if="gameMode === 'europe'">
+			<hr />
+			<InputEstaciones :jugador="jugador"></InputEstaciones>
+		</template>
 		<hr />
 
 		<InputObjetivo
@@ -38,7 +39,11 @@ import InputObjetivo from "@/components/InputObjetivo.vue";
 import { ref, computed, watch } from "vue";
 import { useStore } from "@/stores/store";
 
-const { jugadores, addObjetivos, calcularTotal, actualizarNombre } = useStore();
+import { storeToRefs } from "pinia";
+
+const store = useStore();
+const { jugadores, gameMode } = storeToRefs(store);
+const { addObjetivos, calcularTotal, actualizarNombre } = store;
 
 const props = defineProps({
 	jugador: Object,
@@ -50,8 +55,8 @@ watch(jugadores, () => {
 	total.value = calcularTotal(props.jugador.id);
 });
 
-const vagones = props.jugador.vagones;
-const color = props.jugador.color;
+const vagones = computed(() => props.jugador.vagones);
+const color = computed(() => props.jugador.color);
 
 const vagonesSinUsar = computed(() => {
 	return 45 - props.jugador.vagonesUsados;

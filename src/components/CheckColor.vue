@@ -12,7 +12,7 @@
 <script setup>
 // crear la acción en piniar  parametro (checked) ref
 
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useStore } from "@/stores/store";
 
 const { toggleVisible } = useStore();
@@ -27,7 +27,7 @@ const toggle = () => {
 	toggleVisible(props.jugador.id);
 };
 
-const color = props.jugador.color;
+const color = computed(() => props.jugador.color);
 </script>
 
 <style>

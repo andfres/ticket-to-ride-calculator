@@ -1,75 +1,57 @@
 import { defineStore } from "pinia";
 
+const crearVagones = (mode) => {
+	const vagones = [
+		{ id: 0, num_vagones: 1, puntos: 1, cantidad: 0, puntosTotales: 0 },
+		{ id: 1, num_vagones: 2, puntos: 2, cantidad: 0, puntosTotales: 0 },
+		{ id: 2, num_vagones: 3, puntos: 4, cantidad: 0, puntosTotales: 0 },
+		{ id: 3, num_vagones: 4, puntos: 7, cantidad: 0, puntosTotales: 0 },
+		{ id: 4, num_vagones: 5, puntos: 10, cantidad: 0, puntosTotales: 0 },
+		{ id: 5, num_vagones: 6, puntos: 15, cantidad: 0, puntosTotales: 0 },
+		{ id: 6, num_vagones: 8, puntos: 21, cantidad: 0, puntosTotales: 0 },
+	];
+
+	if (mode === "amsterdam") {
+		return vagones.slice(0, 4);
+	}
+
+	return vagones;
+};
+
+const crearJugadores = (mode) => {
+	const config = {
+		europe: [
+			{ id: 0, nombre: "Jugador 1", color: "#ff0000", visible: true },
+			{ id: 1, nombre: "Jugador 2", color: "#0015ff", visible: false },
+			{ id: 2, nombre: "Jugador 3", color: "#fbff00", visible: true },
+			{ id: 3, nombre: "Jugador 4", color: "#00ff00", visible: true },
+			{ id: 4, nombre: "Jugador 5", color: "#000000", visible: false },
+		],
+		amsterdam: [
+			{ id: 0, nombre: "Jugador 1", color: "#ffffff", visible: true },
+			{ id: 1, nombre: "Jugador 2", color: "#000000", visible: true },
+			{ id: 2, nombre: "Jugador 3", color: "#e78f50ff", visible: true }, // Chocolate/Brown
+			{ id: 3, nombre: "Jugador 4", color: "#8b2f13ff", visible: false }, // SaddleBrown/DarkBrown
+		],
+	};
+
+	return config[mode].map((j) => ({
+		...j,
+		vagones: crearVagones(mode),
+		puntosVagones: 0,
+		vagonesUsados: 0,
+		cantidadEstaciones: 0,
+		puntosEstaciones: 0,
+		objetivos: Array(3).fill(0),
+		puntosTotales: 0,
+	}));
+};
+
 export const useStore = defineStore({
 	id: "main",
 	state: () => ({
-		jugadores: [
-			{
-				id: 0,
-				nombre: "Jugador 1",
-				color: "#ff0000",
-				visible: true,
-				vagones: crearVagones(),
-				puntosVagones: 0,
-				vagonesUsados: 0,
-				cantidadEstaciones: 0,
-				puntosEstaciones: 0,
-				objetivos: Array(3).fill(0),
-				puntosTotales: 0,
-			},
-			{
-				id: 1,
-				nombre: "Jugador 2",
-				color: "#0015ff",
-				visible: false,
-				vagones: crearVagones(),
-				puntosVagones: 0,
-				vagonesUsados: 0,
-				cantidadEstaciones: 0,
-				puntosEstaciones: 0,
-				objetivos: Array(3).fill(0),
-				puntosTotales: 0,
-			},
-			{
-				id: 2,
-				nombre: "Jugador 3",
-				color: "#fbff00",
-				visible: true,
-				vagones: crearVagones(),
-				puntosVagones: 0,
-				vagonesUsados: 0,
-				cantidadEstaciones: 0,
-				puntosEstaciones: 0,
-				objetivos: Array(3).fill(0),
-				puntosTotales: 0,
-			},
-			{
-				id: 3,
-				nombre: "Jugador 4",
-				color: "#00ff00",
-				visible: true,
-				vagones: crearVagones(),
-				puntosVagones: 0,
-				vagonesUsados: 0,
-				cantidadEstaciones: 0,
-				puntosEstaciones: 0,
-				objetivos: Array(3).fill(0),
-				puntosTotales: 0,
-			},
-			{
-				id: 4,
-				nombre: "Jugador 5",
-				color: "#000000",
-				visible: false,
-				vagones: crearVagones(),
-				puntosVagones: 0,
-				vagonesUsados: 0,
-				cantidadEstaciones: 0,
-				puntosEstaciones: 0,
-				objetivos: Array(3).fill(0),
-				puntosTotales: 0,
-			},
-		],
+		gameMode: "europe",
+		jugadores: crearJugadores("europe"),
 	}),
 
 	getters: {
@@ -77,17 +59,25 @@ export const useStore = defineStore({
 			return (jugadorId) => {
 				const jugador = state.jugadores[jugadorId];
 
-				let puntosTotalesObjetivos = 0;
+				if (!jugador) return 0;
 
-				// toDo mirar como hacer con reducer
-				jugador.objetivos.map((objetivo) => {
-					puntosTotalesObjetivos += objetivo;
-				});
-				return jugador.puntosVagones + jugador.puntosEstaciones + puntosTotalesObjetivos;
+				const puntosTotalesObjetivos = jugador.objetivos.reduce(
+					(total, objetivo) => total + (objetivo || 0),
+					0,
+				);
+
+				const puntosEstaciones = state.gameMode === "europe" ? jugador.puntosEstaciones : 0;
+
+				return jugador.puntosVagones + puntosEstaciones + puntosTotalesObjetivos;
 			};
 		},
 	},
 	actions: {
+		setGameMode(mode) {
+			this.gameMode = mode;
+			this.jugadores = crearJugadores(mode);
+		},
+
 		quitarVagon(jugadorId, vagonId) {
 			const jugador = this.jugadores[jugadorId];
 			const vagon = jugador.vagones[vagonId];
@@ -147,15 +137,3 @@ export const useStore = defineStore({
 		},
 	}, //fin actions
 });
-
-const crearVagones = () => {
-	return [
-		{ id: 0, num_vagones: 1, puntos: 1, cantidad: 0, puntosTotales: 0 },
-		{ id: 1, num_vagones: 2, puntos: 2, cantidad: 0, puntosTotales: 0 },
-		{ id: 2, num_vagones: 3, puntos: 4, cantidad: 0, puntosTotales: 0 },
-		{ id: 3, num_vagones: 4, puntos: 7, cantidad: 0, puntosTotales: 0 },
-		{ id: 4, num_vagones: 5, puntos: 10, cantidad: 0, puntosTotales: 0 },
-		{ id: 5, num_vagones: 6, puntos: 15, cantidad: 0, puntosTotales: 0 },
-		{ id: 6, num_vagones: 8, puntos: 21, cantidad: 0, puntosTotales: 0 },
-	];
-};
