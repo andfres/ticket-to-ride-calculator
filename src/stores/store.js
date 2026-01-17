@@ -138,6 +138,10 @@ export const useStore = defineStore({
 			objetivos[num_objetivo] = cantidad;
 		},
 
+		actualizarNombre(jugadorId, nombre) {
+			this.jugadores[jugadorId].nombre = nombre;
+		},
+
 		toggleVisible(jugadorId) {
 			this.jugadores[jugadorId].visible = !this.jugadores[jugadorId].visible;
 		},

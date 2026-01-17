@@ -22,7 +22,6 @@
 import CheckColor from "@/components/CheckColor.vue";
 import ContadorJugador from "@/components/ContadorJugador.vue";
 import { useStore } from "@/stores/store";
-import { storeToRefs } from "pinia";
 
 const { jugadores } = useStore();
 //const { jugadores } = storeToRefs(useStore());

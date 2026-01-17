@@ -1,7 +1,7 @@
 <template>
 	<div v-if="jugador.visible" class="jugador">
 		Nombre jugador:
-		<input type="text" v-model="jugador.nombre" />
+		<input type="text" :value="jugador.nombre" @input="cambiarNombre" />
 
 		<div>
 			<InputVagon v-for="(ele, i) in vagones" :key="i" :vagon="ele" :jugadorId="jugador.id">
@@ -26,7 +26,7 @@
 		<button @click="aumentarNumeroObjetivos">Añadir objetivo</button>
 		<hr />
 
-		<p>total {{ total }}</p>
+		<p>Total: {{ total }}</p>
 	</div>
 </template>
 
@@ -38,7 +38,7 @@ import InputObjetivo from "@/components/InputObjetivo.vue";
 import { ref, computed, watch } from "vue";
 import { useStore } from "@/stores/store";
 
-const { jugadores, addObjetivos, calcularTotal } = useStore();
+const { jugadores, addObjetivos, calcularTotal, actualizarNombre } = useStore();
 
 const props = defineProps({
 	jugador: Object,
@@ -63,6 +63,10 @@ const colorVagonesSinUsar = computed(() => {
 	}
 	return "black";
 });
+
+const cambiarNombre = (e) => {
+	actualizarNombre(props.jugador.id, e.target.value);
+};
 
 const aumentarNumeroObjetivos = () => {
 	addObjetivos(props.jugador.id);
