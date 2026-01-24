@@ -2,13 +2,13 @@ import { defineStore } from "pinia";
 
 const crearVagones = (mode) => {
 	const vagones = [
-		{ id: 0, num_vagones: 1, puntos: 1, cantidad: 0, puntosTotales: 0 },
-		{ id: 1, num_vagones: 2, puntos: 2, cantidad: 0, puntosTotales: 0 },
-		{ id: 2, num_vagones: 3, puntos: 4, cantidad: 0, puntosTotales: 0 },
-		{ id: 3, num_vagones: 4, puntos: 7, cantidad: 0, puntosTotales: 0 },
-		{ id: 4, num_vagones: 5, puntos: 10, cantidad: 0, puntosTotales: 0 },
-		{ id: 5, num_vagones: 6, puntos: 15, cantidad: 0, puntosTotales: 0 },
-		{ id: 6, num_vagones: 8, puntos: 21, cantidad: 0, puntosTotales: 0 },
+		{ id: 0, num_vagones: 1, puntos: 1, cantidad: 0 },
+		{ id: 1, num_vagones: 2, puntos: 2, cantidad: 0 },
+		{ id: 2, num_vagones: 3, puntos: 4, cantidad: 0 },
+		{ id: 3, num_vagones: 4, puntos: 7, cantidad: 0 },
+		{ id: 4, num_vagones: 5, puntos: 10, cantidad: 0 },
+		{ id: 5, num_vagones: 6, puntos: 15, cantidad: 0 },
+		{ id: 6, num_vagones: 8, puntos: 21, cantidad: 0 },
 	];
 
 	if (mode === "amsterdam") {
@@ -38,12 +38,8 @@ const crearJugadores = (mode) => {
 	return config[mode].map((j) => ({
 		...j,
 		vagones: crearVagones(mode),
-		puntosVagones: 0,
-		vagonesUsados: 0,
 		cantidadEstaciones: 0,
-		puntosEstaciones: 0,
 		objetivos: Array(3).fill(0),
-		puntosTotales: 0,
 	}));
 };
 
@@ -51,89 +47,90 @@ export const useStore = defineStore({
 	id: "main",
 	state: () => ({
 		gameMode: "europe",
-		jugadores: crearJugadores("europe"),
+		jugadoresData: crearJugadores("europe"),
 	}),
 
 	getters: {
-		calcularTotal: (state) => {
-			return (jugadorId) => {
-				const jugador = state.jugadores[jugadorId];
+		jugadores: (state) => {
+			return state.jugadoresData.map((jugador) => {
+				const vagonesConPuntos = jugador.vagones.map((vagon) => ({
+					...vagon,
+					puntosTotales: vagon.cantidad * vagon.puntos,
+				}));
 
-				if (!jugador) return 0;
+				const puntosVagones = vagonesConPuntos.reduce((acc, v) => acc + v.puntosTotales, 0);
 
-				const puntosTotalesObjetivos = jugador.objetivos.reduce(
-					(total, objetivo) => total + (objetivo || 0),
+				const vagonesUsados = vagonesConPuntos.reduce(
+					(acc, v) => acc + v.cantidad * v.num_vagones,
 					0,
 				);
 
-				const puntosEstaciones = state.gameMode === "europe" ? jugador.puntosEstaciones : 0;
+				const puntosEstaciones = state.gameMode === "europe" ? jugador.cantidadEstaciones * 4 : 0;
 
-				return jugador.puntosVagones + puntosEstaciones + puntosTotalesObjetivos;
-			};
+				const puntosObjetivos = jugador.objetivos.reduce((acc, obj) => acc + (obj || 0), 0);
+
+				const puntosTotales = puntosVagones + puntosEstaciones + puntosObjetivos;
+
+				return {
+					...jugador,
+					vagones: vagonesConPuntos,
+					puntosVagones,
+					vagonesUsados,
+					puntosEstaciones,
+					puntosTotales,
+				};
+			});
 		},
 	},
 	actions: {
 		setGameMode(mode) {
 			this.gameMode = mode;
-			this.jugadores = crearJugadores(mode);
+			this.jugadoresData = crearJugadores(mode);
 		},
 
 		quitarVagon(jugadorId, vagonId) {
-			const jugador = this.jugadores[jugadorId];
+			const jugador = this.jugadoresData[jugadorId];
 			const vagon = jugador.vagones[vagonId];
-			vagon.puntosTotales -= vagon.puntos;
 			vagon.cantidad -= 1;
-			jugador.vagonesUsados -= vagon.num_vagones;
-			jugador.puntosVagones -= vagon.puntos;
-			//jugador.puntosTotales -= vagon.puntos;
 		},
 
 		addVagon(jugadorId, vagonId) {
-			const jugador = this.jugadores[jugadorId];
+			const jugador = this.jugadoresData[jugadorId];
 			const vagon = jugador.vagones[vagonId];
-			vagon.puntosTotales += vagon.puntos;
 			vagon.cantidad += 1;
-			jugador.vagonesUsados += vagon.num_vagones;
-
-			jugador.puntosVagones += vagon.puntos;
-			//jugador.puntosTotales += vagon.puntos;
 		},
 
 		disminuirEstaciones(jugadorId) {
-			const jugador = this.jugadores[jugadorId];
+			const jugador = this.jugadoresData[jugadorId];
 			jugador.cantidadEstaciones -= 1;
-			jugador.puntosEstaciones -= 4;
-			//jugador.puntosTotales -= 4;
 		},
 
 		aumentarEstaciones(jugadorId) {
-			const jugador = this.jugadores[jugadorId];
+			const jugador = this.jugadoresData[jugadorId];
 			jugador.cantidadEstaciones += 1;
-			jugador.puntosEstaciones += 4;
-			//jugador.puntosTotales += 4;
 		},
 
 		addObjetivos(jugadorId) {
-			const jugador = this.jugadores[jugadorId];
+			const jugador = this.jugadoresData[jugadorId];
 			jugador.objetivos.push(0);
 		},
 
 		actualizarPuntosObjetivo(jugadorId, objetivoId, puntos) {
-			const jugador = this.jugadores[jugadorId];
+			const jugador = this.jugadoresData[jugadorId];
 			jugador.objetivos[objetivoId] = puntos;
 		},
 
 		addObjetivo(jugadorId, num_objetivo, cantidad) {
-			const objetivos = this.jugadores[jugadorId].objetivos;
+			const objetivos = this.jugadoresData[jugadorId].objetivos;
 			objetivos[num_objetivo] = cantidad;
 		},
 
 		actualizarNombre(jugadorId, nombre) {
-			this.jugadores[jugadorId].nombre = nombre;
+			this.jugadoresData[jugadorId].nombre = nombre;
 		},
 
 		toggleVisible(jugadorId) {
-			this.jugadores[jugadorId].visible = !this.jugadores[jugadorId].visible;
+			this.jugadoresData[jugadorId].visible = !this.jugadoresData[jugadorId].visible;
 		},
 	}, //fin actions
 });

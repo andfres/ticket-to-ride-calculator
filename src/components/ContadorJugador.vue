@@ -36,24 +36,20 @@ import InputVagon from "@/components/InputVagon.vue";
 import InputEstaciones from "@/components/InputEstaciones.vue";
 import InputObjetivo from "@/components/InputObjetivo.vue";
 
-import { ref, computed, watch } from "vue";
+import { computed } from "vue";
 import { useStore } from "@/stores/store";
 
 import { storeToRefs } from "pinia";
 
 const store = useStore();
-const { jugadores, gameMode } = storeToRefs(store);
-const { addObjetivos, calcularTotal, actualizarNombre } = store;
+const { gameMode } = storeToRefs(store);
+const { addObjetivos, actualizarNombre } = store;
 
 const props = defineProps({
 	jugador: Object,
 });
 
-const total = ref(0);
-
-watch(jugadores, () => {
-	total.value = calcularTotal(props.jugador.id);
-});
+const total = computed(() => props.jugador.puntosTotales);
 
 const vagones = computed(() => props.jugador.vagones);
 const color = computed(() => props.jugador.color);
