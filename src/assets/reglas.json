@@ -1,0 +1,34 @@
+{
+  "europe": {
+    "nombre": "Ticket to Ride: Europa",
+    "piezas": 45,
+    "reglas": [
+      { "titulo": "Estaciones", "descripcion": "Cada estación no construida suma 4 puntos." },
+      { "titulo": "Vía más larga", "descripcion": "El jugador con la vía continua más larga recibe 10 puntos extra." }
+    ]
+  },
+  "amsterdam": {
+    "nombre": "Ticket to Ride: Amsterdam",
+    "piezas": 15,
+    "reglas": [
+      { "titulo": "Cesta de puntos", "descripcion": "Basado en los billetes de mercancías recogidos." }
+    ]
+  },
+  "vuelta-del-mundo": {
+    "nombre": "La vuelta al mundo",
+    "piezas": 60,
+    "reglas": [
+      { "titulo": "Puertos", "descripcion": "Cada puerto no construido resta 4 puntos. Si se construye, suma puntos según los billetes completados que lleguen a él." },
+      { "titulo": "Puntos Puerto", "descripcion": "1 billete: 20 pts, 2 billetes: 30 pts, 3+ billetes: 40 pts." }
+    ]
+  },
+  "grandes-lagos": {
+    "nombre": "Los grandes lagos",
+    "piezas": 60,
+    "reglas": [
+      { "titulo": "Puertos", "descripcion": "Cada puerto no construido resta 4 puntos. Si se construye, suma puntos según los billetes completados que lleguen a él." },
+      { "titulo": "Puntos Puerto", "descripcion": "1 billete: 10 pts, 2 billetes: 20 pts, 3+ billetes: 30 pts." },
+      { "titulo": "Ruta Larga", "descripcion": "Se permiten rutas de hasta 9 vagones por 27 puntos." }
+    ]
+  }
+}

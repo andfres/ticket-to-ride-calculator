@@ -8,8 +8,13 @@
 			<select id="modo" :value="gameMode" @change="(e) => setGameMode(e.target.value)">
 				<option value="europe">Europe</option>
 				<option value="amsterdam">Amsterdam</option>
+				<option value="vuelta-del-mundo">La vuelta al mundo</option>
+				<option value="grandes-lagos">Los grandes lagos</option>
 			</select>
+			<button class="btn-reglas" @click="showRules = true">Ver Reglas</button>
 		</div>
+
+		<ModalReglas :isOpen="showRules" :mode="gameMode" @close="showRules = false" />
 
 		<div class="checks">
 			<CheckColor v-for="(item, i) in jugadores" :key="gameMode + i" :jugador="item"></CheckColor>
@@ -35,14 +40,18 @@
 <script setup>
 import CheckColor from "@/components/CheckColor.vue";
 import ContadorJugador from "@/components/ContadorJugador.vue";
+import ModalReglas from "@/components/ModalReglas.vue";
 import { useStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
+import { ref } from "vue";
 
 const store = useStore();
 const { jugadores, gameMode } = storeToRefs(store);
 const { setGameMode, guardarPartida, resetGame } = store;
 const router = useRouter();
+
+const showRules = ref(false);
 
 const finalizarPartida = () => {
 	if (confirm("¿Estás seguro de que quieres finalizar la partida?")) {
@@ -82,6 +91,20 @@ main {
 			padding: 5px;
 			border-radius: 5px;
 			font-family: inherit;
+		}
+
+		.btn-reglas {
+			margin-left: 10px;
+			padding: 5px 15px;
+			border-radius: 5px;
+			background: #8d6e63;
+			color: white;
+			border: none;
+			cursor: pointer;
+			font-family: inherit;
+			&:hover {
+				background: #795548;
+			}
 		}
 	}
 

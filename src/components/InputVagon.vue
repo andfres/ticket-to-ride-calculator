@@ -7,7 +7,7 @@
 			</div>
 
 			<button class="button" @click="disminuir">-</button>
-			<input class="smallInput" ref="input" type="number" v-model="vagon.cantidad" readonly />
+			<input class="smallInput" ref="input" type="number" :value="vagon.cantidad" readonly />
 
 			<button class="button" @click="aumentar">+</button>
 
@@ -28,10 +28,10 @@ const props = defineProps({
 });
 
 const max = computed(() => {
-	if (props.vagon.num_vagones === 8) {
-		return 1;
+	if (props.vagon.num_vagones >= 8) {
+		return 2;
 	} else {
-		return 10;
+		return 25;
 	}
 });
 

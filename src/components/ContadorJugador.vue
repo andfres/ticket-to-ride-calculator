@@ -6,7 +6,7 @@
 		<div>
 			<InputVagon v-for="(ele, i) in vagones" :key="i" :vagon="ele" :jugadorId="jugador.id">
 			</InputVagon>
-			<p class="vagonesSinUsar">{{ vagonesSinUsar }} vagones sin usar</p>
+			<p class="vagonesSinUsar">{{ vagonesSinUsar }} piezas sin usar</p>
 			<p>Puntos vagones {{ jugador.puntosVagones }}</p>
 		</div>
 
@@ -24,6 +24,12 @@
 				</label>
 			</div>
 		</template>
+
+		<template v-if="gameMode === 'vuelta-del-mundo' || gameMode === 'grandes-lagos'">
+			<hr />
+			<InputPuertos :jugador="jugador"></InputPuertos>
+		</template>
+
 		<hr />
 
 		<InputObjetivo
@@ -44,6 +50,7 @@
 <script setup>
 import InputVagon from "@/components/InputVagon.vue";
 import InputEstaciones from "@/components/InputEstaciones.vue";
+import InputPuertos from "@/components/InputPuertos.vue";
 import InputObjetivo from "@/components/InputObjetivo.vue";
 
 import { computed } from "vue";
@@ -52,7 +59,7 @@ import { useStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
 
 const store = useStore();
-const { gameMode } = storeToRefs(store);
+const { gameMode, maxPiezas } = storeToRefs(store);
 const { addObjetivos, actualizarNombre } = store;
 
 const props = defineProps({
@@ -65,7 +72,7 @@ const vagones = computed(() => props.jugador.vagones);
 const color = computed(() => props.jugador.color);
 
 const vagonesSinUsar = computed(() => {
-	return 45 - props.jugador.vagonesUsados;
+	return maxPiezas.value - props.jugador.vagonesUsados;
 });
 
 const colorVagonesSinUsar = computed(() => {

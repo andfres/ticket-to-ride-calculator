@@ -9,13 +9,18 @@ const crearVagones = (mode) => {
 		{ id: 4, num_vagones: 5, puntos: 10, cantidad: 0 },
 		{ id: 5, num_vagones: 6, puntos: 15, cantidad: 0 },
 		{ id: 6, num_vagones: 8, puntos: 21, cantidad: 0 },
+		{ id: 7, num_vagones: 9, puntos: 27, cantidad: 0 },
 	];
 
 	if (mode === "amsterdam") {
 		return vagones.slice(0, 4);
 	}
 
-	return vagones;
+	if (mode === "grandes-lagos") {
+		return vagones;
+	}
+
+	return vagones.slice(0, 7);
 };
 
 const crearJugadores = (mode) => {
@@ -33,12 +38,31 @@ const crearJugadores = (mode) => {
 			{ id: 2, nombre: "Jugador 3", color: "#e78f50ff", visible: true }, // Chocolate/Brown
 			{ id: 3, nombre: "Jugador 4", color: "#8b2f13ff", visible: false }, // SaddleBrown/DarkBrown
 		],
+		"vuelta-del-mundo": [
+			{ id: 0, nombre: "Jugador 1", color: "#ff0000", visible: true },
+			{ id: 1, nombre: "Jugador 2", color: "#0015ff", visible: false },
+			{ id: 2, nombre: "Jugador 3", color: "#fbff00", visible: true },
+			{ id: 3, nombre: "Jugador 4", color: "#00ff00", visible: true },
+			{ id: 4, nombre: "Jugador 5", color: "#000000", visible: false },
+		],
+		"grandes-lagos": [
+			{ id: 0, nombre: "Jugador 1", color: "#ff0000", visible: true },
+			{ id: 1, nombre: "Jugador 2", color: "#0015ff", visible: false },
+			{ id: 2, nombre: "Jugador 3", color: "#fbff00", visible: true },
+			{ id: 3, nombre: "Jugador 4", color: "#00ff00", visible: true },
+			{ id: 4, nombre: "Jugador 5", color: "#000000", visible: false },
+		],
 	};
 
 	return config[mode].map((j) => ({
 		...j,
 		vagones: crearVagones(mode),
 		cantidadEstaciones: 0,
+		puertos: [
+			{ id: 0, construido: false, tickets: 0 },
+			{ id: 1, construido: false, tickets: 0 },
+			{ id: 2, construido: false, tickets: 0 },
+		],
 		objetivos: Array(3).fill(0),
 		tieneViaMasLarga: false,
 	}));
@@ -53,6 +77,11 @@ export const useStore = defineStore({
 	}),
 
 	getters: {
+		maxPiezas: (state) => {
+			if (state.gameMode === "amsterdam") return 15;
+			if (state.gameMode === "vuelta-del-mundo" || state.gameMode === "grandes-lagos") return 60;
+			return 45;
+		},
 		jugadores: (state) => {
 			return state.jugadoresData.map((jugador) => {
 				const vagonesConPuntos = jugador.vagones.map((vagon) => ({
@@ -69,12 +98,25 @@ export const useStore = defineStore({
 
 				const puntosEstaciones = state.gameMode === "europe" ? jugador.cantidadEstaciones * -4 : 0;
 
+				let puntosPuertos = 0;
+				if (state.gameMode === "vuelta-del-mundo" || state.gameMode === "grandes-lagos") {
+					const scoring = state.gameMode === "vuelta-del-mundo" ? [0, 20, 30, 40] : [0, 10, 20, 30];
+					jugador.puertos.forEach((puerto) => {
+						if (puerto.construido) {
+							const ticketPointsIdx = Math.min(puerto.tickets, 3);
+							puntosPuertos += scoring[ticketPointsIdx];
+						} else {
+							puntosPuertos -= 4;
+						}
+					});
+				}
+
 				const puntosObjetivos = jugador.objetivos.reduce((acc, obj) => acc + (obj || 0), 0);
 
 				const puntosViaMasLarga = state.gameMode === "europe" && jugador.tieneViaMasLarga ? 10 : 0;
 
 				const puntosTotales =
-					puntosVagones + puntosEstaciones + puntosObjetivos + puntosViaMasLarga;
+					puntosVagones + puntosEstaciones + puntosPuertos + puntosObjetivos + puntosViaMasLarga;
 
 				return {
 					...jugador,
@@ -82,6 +124,7 @@ export const useStore = defineStore({
 					puntosVagones,
 					vagonesUsados,
 					puntosEstaciones,
+					puntosPuertos,
 					puntosTotales,
 				};
 			});
@@ -113,6 +156,16 @@ export const useStore = defineStore({
 		aumentarEstaciones(jugadorId) {
 			const jugador = this.jugadoresData[jugadorId];
 			jugador.cantidadEstaciones += 1;
+		},
+
+		togglePortBuilt(jugadorId, puertoId) {
+			const puerto = this.jugadoresData[jugadorId].puertos[puertoId];
+			puerto.construido = !puerto.construido;
+		},
+
+		updatePortTickets(jugadorId, puertoId, tickets) {
+			const puerto = this.jugadoresData[jugadorId].puertos[puertoId];
+			puerto.tickets = tickets;
 		},
 
 		addObjetivos(jugadorId) {
