@@ -13,6 +13,16 @@
 		<template v-if="gameMode === 'europe'">
 			<hr />
 			<InputEstaciones :jugador="jugador"></InputEstaciones>
+			<div class="via-mas-larga">
+				<label>
+					<input
+						type="checkbox"
+						:checked="jugador.tieneViaMasLarga"
+						@change="store.toggleViaMasLarga(jugador.id)"
+					/>
+					Vía más larga (+10 pts)
+				</label>
+			</div>
 		</template>
 		<hr />
 
@@ -27,7 +37,7 @@
 		<button @click="aumentarNumeroObjetivos">Añadir objetivo</button>
 		<hr />
 
-		<p>Total: {{ total }}</p>
+		<p class="totalDisp">Total: {{ total }}</p>
 	</div>
 </template>
 
@@ -85,6 +95,29 @@ const aumentarNumeroObjetivos = () => {
 .vagonesSinUsar {
 	color: v-bind(colorVagonesSinUsar);
 }
+.via-mas-larga {
+	margin: 0.5rem 0;
+	font-family: "Neucha", cursive;
+	font-size: 1.1rem;
+	label {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		cursor: pointer;
+	}
+	input {
+		width: 18px;
+		height: 18px;
+	}
+}
+
+.totalDisp {
+	font-size: 1.5rem;
+	font-weight: bold;
+	font-family: "Neucha", cursive;
+	margin-top: 5px;
+}
+
 hr {
 	margin: 0.5rem;
 }

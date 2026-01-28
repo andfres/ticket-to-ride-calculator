@@ -40,6 +40,7 @@ const crearJugadores = (mode) => {
 		vagones: crearVagones(mode),
 		cantidadEstaciones: 0,
 		objetivos: Array(3).fill(0),
+		tieneViaMasLarga: false,
 	}));
 };
 
@@ -48,6 +49,7 @@ export const useStore = defineStore({
 	state: () => ({
 		gameMode: "europe",
 		jugadoresData: crearJugadores("europe"),
+		historial: JSON.parse(localStorage.getItem("ttr-historial") || "[]"),
 	}),
 
 	getters: {
@@ -65,11 +67,14 @@ export const useStore = defineStore({
 					0,
 				);
 
-				const puntosEstaciones = state.gameMode === "europe" ? jugador.cantidadEstaciones * 4 : 0;
+				const puntosEstaciones = state.gameMode === "europe" ? jugador.cantidadEstaciones * -4 : 0;
 
 				const puntosObjetivos = jugador.objetivos.reduce((acc, obj) => acc + (obj || 0), 0);
 
-				const puntosTotales = puntosVagones + puntosEstaciones + puntosObjetivos;
+				const puntosViaMasLarga = state.gameMode === "europe" && jugador.tieneViaMasLarga ? 10 : 0;
+
+				const puntosTotales =
+					puntosVagones + puntosEstaciones + puntosObjetivos + puntosViaMasLarga;
 
 				return {
 					...jugador,
@@ -131,6 +136,43 @@ export const useStore = defineStore({
 
 		toggleVisible(jugadorId) {
 			this.jugadoresData[jugadorId].visible = !this.jugadoresData[jugadorId].visible;
+		},
+
+		toggleViaMasLarga(jugadorId) {
+			const currentPlayerValue = this.jugadoresData[jugadorId].tieneViaMasLarga;
+
+			// Desactivar en todos
+			this.jugadoresData.forEach((j) => {
+				j.tieneViaMasLarga = false;
+			});
+
+			// Poner el valor contrario al que tenía el jugador seleccionado
+			// (Si estaba activo se desactiva, si estaba inactivo se activa y los demás se quedan desactivados)
+			this.jugadoresData[jugadorId].tieneViaMasLarga = !currentPlayerValue;
+		},
+
+		guardarPartida() {
+			const resumen = {
+				fecha: new Date().toISOString(),
+				modo: this.gameMode,
+				jugadores: this.jugadores.map((j) => ({
+					nombre: j.nombre,
+					puntos: j.puntosTotales,
+					visible: j.visible,
+				})),
+			};
+
+			this.historial.unshift(resumen);
+			localStorage.setItem("ttr-historial", JSON.stringify(this.historial));
+		},
+
+		resetGame() {
+			this.jugadoresData = crearJugadores(this.gameMode);
+		},
+
+		eliminarPartida(index) {
+			this.historial.splice(index, 1);
+			localStorage.setItem("ttr-historial", JSON.stringify(this.historial));
 		},
 	}, //fin actions
 });

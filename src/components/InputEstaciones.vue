@@ -3,7 +3,7 @@
 		<div class="label">
 			<div class="info">
 				<span>Estaciones</span>
-				<span>(4 pts)</span>
+				<span>(-4 pts)</span>
 			</div>
 
 			<button class="button" @click="disminuir">-</button>

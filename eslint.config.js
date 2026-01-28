@@ -7,6 +7,13 @@ export default [
 	...pluginVue.configs["flat/essential"],
 	prettierRecommended,
 	{
+		languageOptions: {
+			globals: {
+				localStorage: "readonly",
+				confirm: "readonly",
+				alert: "readonly",
+			},
+		},
 		rules: {
 			"no-console": "off",
 			"no-debugger": "off",

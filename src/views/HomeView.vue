@@ -20,6 +20,11 @@
 			</ContadorJugador>
 		</div>
 
+		<div class="controles-globales">
+			<button class="btn-secundario" @click="irAHistorial">Ver Historial</button>
+			<button class="btn-primario" @click="finalizarPartida">Finalizar Partida</button>
+		</div>
+
 		<footer>
 			<p>Andrés Fresno. 2022</p>
 			<p>https://github.com/andfres</p>
@@ -32,10 +37,26 @@ import CheckColor from "@/components/CheckColor.vue";
 import ContadorJugador from "@/components/ContadorJugador.vue";
 import { useStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
+import { useRouter } from "vue-router";
 
 const store = useStore();
 const { jugadores, gameMode } = storeToRefs(store);
-const { setGameMode } = store;
+const { setGameMode, guardarPartida, resetGame } = store;
+const router = useRouter();
+
+const finalizarPartida = () => {
+	if (confirm("¿Estás seguro de que quieres finalizar la partida?")) {
+		if (confirm("¿Quieres guardar los datos de la partida en el historial?")) {
+			guardarPartida();
+			alert("Partida guardada correctamente.");
+		}
+		resetGame();
+	}
+};
+
+const irAHistorial = () => {
+	router.push("/historial");
+};
 </script>
 
 <style lang="scss">
@@ -50,7 +71,6 @@ main {
 	padding: 5px;
 	border: 10px;
 	background-color: beige;
-	border: 1px solid red;
 
 	.selector-modo {
 		text-align: center;
@@ -84,6 +104,39 @@ main {
 		flex-wrap: wrap;
 		gap: 10px;
 		justify-content: center;
+	}
+
+	.controles-globales {
+		margin: 2rem 0;
+		display: flex;
+		justify-content: center;
+		gap: 1rem;
+
+		button {
+			padding: 12px 24px;
+			font-family: "Neucha", cursive;
+			font-size: 1.2rem;
+			border-radius: 8px;
+			cursor: pointer;
+			border: none;
+			transition: transform 0.1s;
+
+			&:active {
+				transform: scale(0.95);
+			}
+		}
+
+		.btn-primario {
+			background-color: #4caf50;
+			color: white;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		}
+
+		.btn-secundario {
+			background-color: #2196f3;
+			color: white;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		}
 	}
 }
 </style>
