@@ -1,21 +1,24 @@
 <template>
 	<main class="home-view">
+		<div class="lang-top">
+			<LanguageSwitcher />
+		</div>
 		<div class="header-section">
-			<h1>Calculadora</h1>
-			<h2>¡Aventureros al Tren!</h2>
-			
+			<h1>{{ $t("general.title") }}</h1>
+			<h2>{{ $t("general.subtitle") }}</h2>
+
 			<div class="selector-container glass">
 				<div class="field">
-					<label for="modo">Modelo de juego</label>
+					<label for="modo">{{ $t("selector.mode_label") }}</label>
 					<select id="modo" :value="gameMode" @change="(e) => setGameMode(e.target.value)">
-						<option value="europe">Europe</option>
-						<option value="amsterdam">Amsterdam</option>
-						<option value="vuelta-del-mundo">La vuelta al mundo</option>
-						<option value="grandes-lagos">Los grandes lagos</option>
+						<option value="europe">{{ $t("selector.modes.europe") }}</option>
+						<option value="amsterdam">{{ $t("selector.modes.amsterdam") }}</option>
+						<option value="vuelta-del-mundo">{{ $t("selector.modes.vuelta-del-mundo") }}</option>
+						<option value="grandes-lagos">{{ $t("selector.modes.grandes-lagos") }}</option>
 					</select>
 				</div>
 				<button class="btn-reglas" @click="showRules = true">
-					<span>ℹ️</span> Ver Reglas
+					<span>ℹ️</span> {{ $t("selector.rules_btn") }}
 				</button>
 			</div>
 		</div>
@@ -24,7 +27,11 @@
 
 		<div class="players-section">
 			<div class="color-selector glass">
-				<CheckColor v-for="(item, i) in jugadores" :key="gameMode + i" :jugador="item"></CheckColor>
+				<CheckColor
+					v-for="(item, i) in jugadores"
+					:key="gameMode + i"
+					:jugador="item"
+				></CheckColor>
 			</div>
 
 			<div class="jugadores-grid">
@@ -36,12 +43,14 @@
 		</div>
 
 		<div class="controles-globales">
-			<button class="btn btn-secundario" @click="irAHistorial">Ver Historial</button>
-			<button class="btn btn-primario" @click="finalizarPartida">Finalizar Partida</button>
+			<button class="btn btn-secundario" @click="irAHistorial">{{ $t("general.history") }}</button>
+			<button class="btn btn-primario" @click="finalizarPartida">
+				{{ $t("general.finish_game") }}
+			</button>
 		</div>
 
 		<footer class="main-footer">
-			<p>Andrés Fresno &copy; 2022 - 2026</p>
+			<p>{{ $t("general.footer_author") }} &copy; 2022 - {{ new Date().getFullYear() }}</p>
 			<a href="https://github.com/andfres" target="_blank">github.com/andfres</a>
 		</footer>
 	</main>
@@ -51,10 +60,14 @@
 import CheckColor from "@/components/CheckColor.vue";
 import ContadorJugador from "@/components/ContadorJugador.vue";
 import ModalReglas from "@/components/ModalReglas.vue";
+import LanguageSwitcher from "@/components/LanguageSwitcher.vue";
 import { useStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const store = useStore();
 const { jugadores, gameMode } = storeToRefs(store);
@@ -64,10 +77,10 @@ const router = useRouter();
 const showRules = ref(false);
 
 const finalizarPartida = () => {
-	if (confirm("¿Estás seguro de que quieres finalizar la partida?")) {
-		if (confirm("¿Quieres guardar los datos de la partida en el historial?")) {
+	if (confirm(t("general.confirm_finish"))) {
+		if (confirm(t("general.confirm_save_history"))) {
 			guardarPartida();
-			alert("Partida guardada correctamente.");
+			alert(t("general.save_success"));
 		}
 		resetGame();
 	}
@@ -87,6 +100,13 @@ const irAHistorial = () => {
 	flex-direction: column;
 	align-items: center;
 	gap: 3rem;
+
+	.lang-top {
+		width: 100%;
+		display: flex;
+		justify-content: flex-end;
+		margin-bottom: -1rem;
+	}
 
 	.header-section {
 		text-align: center;
@@ -253,7 +273,7 @@ const irAHistorial = () => {
 		flex-direction: column;
 		align-items: stretch;
 		width: 100%;
-		
+
 		.field select {
 			min-width: unset;
 		}

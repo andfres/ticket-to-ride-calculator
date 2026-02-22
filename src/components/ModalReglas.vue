@@ -1,12 +1,14 @@
 <template>
 	<div v-if="isOpen" class="modal-overlay" @click.self="emit('close')">
-		<div class="modal-content">
+		<div class="modal-content glass">
 			<div class="modal-header">
-				<h2>Reglas: {{ gameRules.nombre }}</h2>
+				<h2>{{ $t("rules.title", { name: gameRules.nombre }) }}</h2>
 				<button class="close-btn" @click="emit('close')">&times;</button>
 			</div>
 			<div class="modal-body">
-				<p><strong>Piezas totales:</strong> {{ gameRules.piezas }}</p>
+				<p>
+					<strong>{{ $t("rules.pieces", { n: gameRules.piezas || piezasTotales }) }}</strong>
+				</p>
 				<hr />
 				<div v-for="(regla, index) in gameRules.reglas" :key="index" class="regla-item">
 					<h3>{{ regla.titulo }}</h3>
@@ -19,7 +21,9 @@
 
 <script setup>
 import { computed } from "vue";
-import reglasData from "@/assets/reglas.json";
+import { useI18n } from "vue-i18n";
+
+const { tm, rt, t } = useI18n();
 
 const props = defineProps({
 	isOpen: Boolean,
@@ -28,8 +32,28 @@ const props = defineProps({
 
 const emit = defineEmits(["close"]);
 
+// Original pieces data (fixed per mode)
+const piezasData = {
+	europe: 45,
+	amsterdam: 15,
+	"vuelta-del-mundo": 60,
+	"grandes-lagos": 60,
+};
+
+const piezasTotales = computed(() => piezasData[props.mode] || 0);
+
 const gameRules = computed(() => {
-	return reglasData[props.mode] || { nombre: "Desconocido", piezas: 0, reglas: [] };
+	const rules = tm(`rules.${props.mode}`);
+	if (!rules) return { nombre: t("rules.unknown"), reglas: [] };
+
+	// tm returns a Proxy/Object from the locale, we need to handle it
+	return {
+		nombre: rt(rules.nombre),
+		reglas: rules.reglas.map((r) => ({
+			titulo: rt(r.titulo),
+			descripcion: rt(r.descripcion),
+		})),
+	};
 });
 </script>
 
@@ -40,69 +64,104 @@ const gameRules = computed(() => {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: rgba(0, 0, 0, 0.5);
+	background: rgba(0, 0, 0, 0.6);
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	z-index: 1000;
+	backdrop-filter: blur(4px);
 }
 
 .modal-content {
-	background: white;
-	padding: 2rem;
-	border-radius: 15px;
-	width: min(500px, 90%);
-	max-height: 80vh;
+	padding: 2.5rem;
+	border-radius: var(--radius-lg);
+	width: min(550px, 94%);
+	max-height: 85vh;
 	overflow-y: auto;
-	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-	font-family: "Neucha", cursive;
+	box-shadow: var(--shadow-xl);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	background: rgba(15, 23, 42, 0.85);
+
+	&.glass {
+		background: rgba(255, 255, 255, 0.05);
+		backdrop-filter: blur(16px);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+	}
 }
 
 .modal-header {
 	display: flex;
 	justify-content: space-between;
-	align-items: center;
-	margin-bottom: 1.5rem;
-	border-bottom: 2px solid #f0ead6;
-	padding-bottom: 0.5rem;
+	align-items: flex-start;
+	margin-bottom: 2rem;
+	border-bottom: 1px solid var(--color-border);
+	padding-bottom: 1rem;
 
 	h2 {
 		margin: 0;
-		color: #5d4037;
+		color: var(--color-accent);
+		font-size: 1.8rem;
+		line-height: 1.2;
 	}
 
 	.close-btn {
 		background: none;
 		border: none;
-		font-size: 2rem;
+		font-size: 2.5rem;
 		cursor: pointer;
-		color: #8d6e63;
+		color: var(--color-text-mute);
+		line-height: 0.5;
+		transition: color 0.2s;
 		&:hover {
-			color: #5d4037;
+			color: #ef4444;
 		}
 	}
 }
 
 .modal-body {
-	color: #4e342e;
+	color: var(--color-text-soft);
+
+	p {
+		font-size: 1.1rem;
+		margin-bottom: 1rem;
+	}
 
 	.regla-item {
-		margin-bottom: 1.5rem;
+		margin-bottom: 2rem;
+		background: rgba(255, 255, 255, 0.03);
+		padding: 1.25rem;
+		border-radius: var(--radius-md);
+		border-left: 4px solid var(--color-accent);
+
 		h3 {
 			margin-top: 0;
-			margin-bottom: 0.5rem;
-			color: #795548;
+			margin-bottom: 0.75rem;
+			color: var(--color-text);
+			font-size: 1.2rem;
 		}
 		p {
 			margin: 0;
-			line-height: 1.4;
+			line-height: 1.6;
+			font-size: 1rem;
 		}
 	}
 }
 
 hr {
-	margin: 1rem 0;
+	margin: 1.5rem 0;
 	border: none;
-	border-top: 1px solid #f0ead6;
+	border-top: 1px solid var(--color-border);
+}
+
+/* Scrollbar styling */
+.modal-content::-webkit-scrollbar {
+	width: 6px;
+}
+.modal-content::-webkit-scrollbar-track {
+	background: transparent;
+}
+.modal-content::-webkit-scrollbar-thumb {
+	background: rgba(255, 255, 255, 0.1);
+	border-radius: 10px;
 }
 </style>

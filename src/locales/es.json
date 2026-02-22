@@ -1,0 +1,84 @@
+{
+  "general": {
+    "title": "Calculadora",
+    "subtitle": "¡Aventureros al Tren!",
+    "history": "Ver Historial",
+    "finish_game": "Finalizar Partida",
+    "confirm_finish": "¿Estás seguro de que quieres finalizar la partida?",
+    "confirm_save_history": "¿Quieres guardar los datos de la partida en el historial?",
+    "save_success": "Partida guardada correctamente.",
+    "footer_author": "Andrés Fresno"
+  },
+  "selector": {
+    "mode_label": "Modelo de juego",
+    "rules_btn": "Ver Reglas",
+    "modes": {
+      "europe": "Europe",
+      "amsterdam": "Amsterdam",
+      "vuelta-del-mundo": "La vuelta al mundo",
+      "grandes-lagos": "Los grandes lagos"
+    }
+  },
+  "player": {
+    "name_label": "Nombre del Jugador",
+    "placeholder": "Jugador...",
+    "points": "Puntos",
+    "total_points": "Puntos Totales",
+    "pieces_left": "{n} piezas restantes",
+    "pieces_limit": "¡Límite alcanzado!",
+    "vagones": "Vagones",
+    "vagon_1": "1 vagón",
+    "vagon_n": "{n} vagones",
+    "objetivos": {
+      "title": "Objetivos",
+      "add": "Añadir",
+      "remove": "Quitar",
+      "label": "Objetivo {n}"
+    },
+    "europe": {
+      "title": "Opciones Europe",
+      "stations": "Estaciones",
+      "stations_subtitle": "(-4 pts cada una)",
+      "longest_path": "Vía más larga (+10 pts)"
+    },
+    "global": {
+      "ports_title": "Puertos",
+      "ports_subtitle": "(-4 si no construido)",
+      "port_subtotal": "Subtotal Puertos",
+      "tickets": "tickets"
+    }
+  },
+  "rules": {
+    "title": "Reglas: {name}",
+    "pieces": "Piezas totales: {n}",
+    "unknown": "Desconocido",
+    "europe": {
+      "nombre": "Ticket to Ride: Europa",
+      "reglas": [
+        { "titulo": "Estaciones", "descripcion": "Cada estación no construida suma 4 puntos." },
+        { "titulo": "Vía más larga", "descripcion": "El jugador con la vía continua más larga recibe 10 puntos extra." }
+      ]
+    },
+    "amsterdam": {
+      "nombre": "Ticket to Ride: Amsterdam",
+      "reglas": [
+        { "titulo": "Cesta de puntos", "descripcion": "Basado en los billetes de mercancías recogidos." }
+      ]
+    },
+    "vuelta-del-mundo": {
+      "nombre": "La vuelta al mundo",
+      "reglas": [
+        { "titulo": "Puertos", "descripcion": "Cada puerto no construido resta 4 puntos. Si se construye, suma puntos según los billetes completados que lleguen a él." },
+        { "titulo": "Puntos Puerto", "descripcion": "1 billete: 20 pts, 2 billetes: 30 pts, 3+ billetes: 40 pts." }
+      ]
+    },
+    "grandes-lagos": {
+      "nombre": "Los grandes lagos",
+      "reglas": [
+        { "titulo": "Puertos", "descripcion": "Cada puerto no construido resta 4 puntos. Si se construye, suma puntos según los billetes completados que lleguen a él." },
+        { "titulo": "Puntos Puerto", "descripcion": "1 billete: 10 pts, 2 billetes: 20 pts, 3+ billetes: 30 pts." },
+        { "titulo": "Ruta Larga", "descripcion": "Se permiten rutas de hasta 9 vagones por 27 puntos." }
+      ]
+    }
+  }
+}

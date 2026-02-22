@@ -1,8 +1,8 @@
 <template>
 	<div class="input-modern-row">
 		<div class="label-info">
-			<span class="title">Estaciones</span>
-			<span class="subtitle">(-4 pts cada una)</span>
+			<span class="title">{{ $t("player.europe.stations") }}</span>
+			<span class="subtitle">{{ $t("player.europe.stations_subtitle") }}</span>
 		</div>
 
 		<div class="controls">

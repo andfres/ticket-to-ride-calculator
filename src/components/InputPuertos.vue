@@ -1,8 +1,8 @@
 <template>
 	<div class="input-puertos-container">
 		<header class="seccion-header">
-			<h3>Puertos</h3>
-			<span class="info-tag">(-4 si no construido)</span>
+			<h3>{{ $t("player.global.ports_title") }}</h3>
+			<span class="info-tag">{{ $t("player.global.ports_subtitle") }}</span>
 		</header>
 
 		<div class="puertos-list">
@@ -33,7 +33,7 @@
 						>
 							+
 						</button>
-						<span class="counter-label">tickets</span>
+						<span class="counter-label">{{ $t("player.global.tickets") }}</span>
 					</div>
 				</div>
 				<div :class="['puerto-badge', { built: puerto.construido }]">
@@ -43,7 +43,7 @@
 		</div>
 
 		<footer class="puertos-footer">
-			<span>Subtotal Puertos</span>
+			<span>{{ $t("player.global.port_subtotal") }}</span>
 			<span class="value">{{ jugador.puntosPuertos }} pts</span>
 		</footer>
 	</div>

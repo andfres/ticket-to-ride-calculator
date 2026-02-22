@@ -1,0 +1,84 @@
+{
+  "general": {
+    "title": "Calculator",
+    "subtitle": "Ticket to Ride!",
+    "history": "View History",
+    "finish_game": "Finish Game",
+    "confirm_finish": "Are you sure you want to finish the game?",
+    "confirm_save_history": "Do you want to save the game data to history?",
+    "save_success": "Game saved successfully.",
+    "footer_author": "Andrés Fresno"
+  },
+  "selector": {
+    "mode_label": "Game model",
+    "rules_btn": "View Rules",
+    "modes": {
+      "europe": "Europe",
+      "amsterdam": "Amsterdam",
+      "vuelta-del-mundo": "Around the World",
+      "grandes-lagos": "Great Lakes"
+    }
+  },
+  "player": {
+    "name_label": "Player Name",
+    "placeholder": "Player...",
+    "points": "Points",
+    "total_points": "Total Points",
+    "pieces_left": "{n} pieces left",
+    "pieces_limit": "Limit reached!",
+    "vagones": "Trains",
+    "vagon_1": "1 train",
+    "vagon_n": "{n} trains",
+    "objetivos": {
+      "title": "Objectives",
+      "add": "Add",
+      "remove": "Remove",
+      "label": "Objective {n}"
+    },
+    "europe": {
+      "title": "Europe Options",
+      "stations": "Stations",
+      "stations_subtitle": "(-4 pts each)",
+      "longest_path": "Longest Path (+10 pts)"
+    },
+    "global": {
+      "ports_title": "Ports",
+      "ports_subtitle": "(-4 if not built)",
+      "port_subtotal": "Ports Subtotal",
+      "tickets": "tickets"
+    }
+  },
+  "rules": {
+    "title": "Rules: {name}",
+    "pieces": "Total pieces: {n}",
+    "unknown": "Unknown",
+    "europe": {
+      "nombre": "Ticket to Ride: Europe",
+      "reglas": [
+        { "titulo": "Stations", "descripcion": "Each unbuilt station adds 4 points." },
+        { "titulo": "Longest Path", "descripcion": "The player with the longest continuous path receives 10 extra points." }
+      ]
+    },
+    "amsterdam": {
+      "nombre": "Ticket to Ride: Amsterdam",
+      "reglas": [
+        { "titulo": "Merchandise Bonus", "descripcion": "Based on the collected merchandise tickets." }
+      ]
+    },
+    "vuelta-del-mundo": {
+      "nombre": "Rails & Sails: World",
+      "reglas": [
+        { "titulo": "Ports", "descripcion": "Each unbuilt port subtracts 4 points. If built, it adds points based on completed tickets reaching it." },
+        { "titulo": "Port Points", "descripcion": "1 ticket: 20 pts, 2 tickets: 30 pts, 3+ tickets: 40 pts." }
+      ]
+    },
+    "grandes-lagos": {
+      "nombre": "Rails & Sails: Great Lakes",
+      "reglas": [
+        { "titulo": "Ports", "descripcion": "Each unbuilt port subtracts 4 points. If built, it adds points based on completed tickets reaching it." },
+        { "titulo": "Port Points", "descripcion": "1 ticket: 10 pts, 2 tickets: 20 pts, 3+ tickets: 30 pts." },
+        { "titulo": "Long Route", "descripcion": "Routes up to 9 trains for 27 points are allowed." }
+      ]
+    }
+  }
+}

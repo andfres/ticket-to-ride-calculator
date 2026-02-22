@@ -1,6 +1,6 @@
 <template>
 	<div class="objetivo-row">
-		<label class="obj-label">Objetivo {{ objetivoId + 1 }}</label>
+		<label class="obj-label">{{ $t("player.objetivos.label", { n: objetivoId + 1 }) }}</label>
 		<div class="obj-input-wrapper">
 			<input 
 				ref="input" 

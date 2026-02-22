@@ -6,33 +6,37 @@
 	>
 		<div class="card-header">
 			<div class="player-info">
-				<label>Nombre del Jugador</label>
+				<label>{{ $t("player.name_label") }}</label>
 				<input
 					type="text"
 					:value="jugador.nombre"
 					@input="cambiarNombre"
-					placeholder="Jugador..."
+					:placeholder="$t('player.placeholder')"
 				/>
 			</div>
 		</div>
 
 		<div class="card-body">
 			<section class="section-vagones">
-				<h3>Vagones</h3>
+				<h3>{{ $t("player.vagones") }}</h3>
 				<div class="vagones-grid">
 					<InputVagon v-for="(ele, i) in vagones" :key="i" :vagon="ele" :jugadorId="jugador.id">
 					</InputVagon>
 				</div>
 				<div class="vagones-info">
 					<p :class="['pieces-left', { 'limit-reached': vagonesSinUsar < 0 }]">
-						{{ vagonesSinUsar }} piezas restantes
+						{{
+							vagonesSinUsar < 0
+								? $t("player.pieces_limit")
+								: $t("player.pieces_left", { n: vagonesSinUsar })
+						}}
 					</p>
 					<p class="points-hint">+{{ jugador.puntosVagones }} pts</p>
 				</div>
 			</section>
 
 			<section class="section-objetivos">
-				<h3>Objetivos</h3>
+				<h3>{{ $t("player.objetivos.title") }}</h3>
 				<div class="objetivos-list">
 					<InputObjetivo
 						v-for="(obj, i) in props.jugador.objetivos"
@@ -45,20 +49,20 @@
 				</div>
 				<div class="objetivos-actions">
 					<button class="btn-add-obj" @click="aumentarNumeroObjetivos">
-						<span>+</span> Añadir
+						<span>+</span> {{ $t("player.objetivos.add") }}
 					</button>
 					<button
 						v-if="jugador.objetivos.length > 2"
 						class="btn-remove-obj"
 						@click="quitarUltimoObjetivo"
 					>
-						<span>−</span> Quitar
+						<span>−</span> {{ $t("player.objetivos.remove") }}
 					</button>
 				</div>
 			</section>
 
 			<section v-if="gameMode === 'europe'" class="section-europe">
-				<h3>Opciones Europe</h3>
+				<h3>{{ $t("player.europe.title") }}</h3>
 				<InputEstaciones :jugador="jugador"></InputEstaciones>
 				<div class="legacy-bonus">
 					<label class="checkbox-container">
@@ -68,7 +72,7 @@
 							@change="store.toggleViaMasLarga(jugador.id)"
 						/>
 						<span class="checkmark"></span>
-						Vía más larga (+10 pts)
+						{{ $t("player.europe.longest_path") }}
 					</label>
 				</div>
 			</section>
@@ -86,7 +90,7 @@
 				class="score-badge-bottom"
 				:style="{ background: jugador.color, color: isLightColor ? '#000' : '#fff' }"
 			>
-				<span class="label">Puntos Totales</span>
+				<span class="label">{{ $t("player.total_points") }}</span>
 				<span class="value">{{ total }}</span>
 			</div>
 		</div>
