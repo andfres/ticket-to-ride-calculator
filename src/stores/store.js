@@ -161,16 +161,26 @@ export const useStore = defineStore({
 		togglePortBuilt(jugadorId, puertoId) {
 			const puerto = this.jugadoresData[jugadorId].puertos[puertoId];
 			puerto.construido = !puerto.construido;
+			if (puerto.construido && puerto.tickets === 0) {
+				puerto.tickets = 1;
+			}
 		},
 
 		updatePortTickets(jugadorId, puertoId, tickets) {
 			const puerto = this.jugadoresData[jugadorId].puertos[puertoId];
-			puerto.tickets = tickets;
+			const min = puerto.construido ? 1 : 0;
+			puerto.tickets = Math.max(min, tickets);
 		},
 
 		addObjetivos(jugadorId) {
 			const jugador = this.jugadoresData[jugadorId];
 			jugador.objetivos.push(0);
+		},
+		quitarObjetivo(jugadorId) {
+			const jugador = this.jugadoresData[jugadorId];
+			if (jugador.objetivos.length > 2) {
+				jugador.objetivos.pop();
+			}
 		},
 
 		actualizarPuntosObjetivo(jugadorId, objetivoId, puntos) {

@@ -1,43 +1,51 @@
 <template>
-	<div class="input-puertos">
-		<div class="titulo-seccion">
-			<span>Puertos (-4 si no construido)</span>
-		</div>
-		<div v-for="(puerto, index) in jugador.puertos" :key="index" class="puerto-row">
-			<div class="puerto-check">
-				<label :for="'puerto-' + jugador.id + '-' + index">
-					<input
-						type="checkbox"
-						:id="'puerto-' + jugador.id + '-' + index"
-						:checked="puerto.construido"
-						@change="store.togglePortBuilt(jugador.id, index)"
-					/>
-					Puerto {{ index + 1 }}
-				</label>
+	<div class="input-puertos-container">
+		<header class="seccion-header">
+			<h3>Puertos</h3>
+			<span class="info-tag">(-4 si no construido)</span>
+		</header>
+
+		<div class="puertos-list">
+			<div v-for="(puerto, index) in jugador.puertos" :key="index" class="puerto-card-mini">
+				<div class="puerto-main">
+					<label class="checkbox-custom">
+						<input
+							type="checkbox"
+							:checked="puerto.construido"
+							@change="store.togglePortBuilt(jugador.id, index)"
+						/>
+						<span class="checkmark"></span>
+						P{{ index + 1 }}
+					</label>
+
+					<div v-if="puerto.construido" class="tickets-counter">
+						<button
+							class="btn-mini"
+							@click="store.updatePortTickets(jugador.id, index, puerto.tickets - 1)"
+							:disabled="puerto.tickets <= 1"
+						>
+							−
+						</button>
+						<span class="counter-val">{{ puerto.tickets }}</span>
+						<button
+							class="btn-mini"
+							@click="store.updatePortTickets(jugador.id, index, puerto.tickets + 1)"
+						>
+							+
+						</button>
+						<span class="counter-label">tickets</span>
+					</div>
+				</div>
+				<div :class="['puerto-badge', { built: puerto.construido }]">
+					{{ calcularPuntosPuerto(puerto) }} pts
+				</div>
 			</div>
-			<div v-if="puerto.construido" class="puerto-tickets">
-				<label>Tickets:</label>
-				<select
-					:value="puerto.tickets"
-					@change="(e) => store.updatePortTickets(jugador.id, index, parseInt(e.target.value))"
-				>
-					<template v-if="gameMode === 'vuelta-del-mundo'">
-						<option :value="0">0 (0 pts)</option>
-						<option :value="1">1 (20 pts)</option>
-						<option :value="2">2 (30 pts)</option>
-						<option :value="3">3+ (40 pts)</option>
-					</template>
-					<template v-else>
-						<option :value="0">0 (0 pts)</option>
-						<option :value="1">1 (10 pts)</option>
-						<option :value="2">2 (30 pts)</option>
-						<option :value="3">3+ (30 pts)</option>
-					</template>
-				</select>
-			</div>
-			<div class="puerto-puntos">{{ calcularPuntosPuerto(puerto) }} pts</div>
 		</div>
-		<div class="total-puertos">Subtotal Puertos: {{ jugador.puntosPuertos }} pts</div>
+
+		<footer class="puertos-footer">
+			<span>Subtotal Puertos</span>
+			<span class="value">{{ jugador.puntosPuertos }} pts</span>
+		</footer>
 	</div>
 </template>
 
@@ -61,61 +69,142 @@ const calcularPuntosPuerto = (puerto) => {
 </script>
 
 <style lang="scss" scoped>
-.input-puertos {
-	margin: 1rem 0;
-	font-family: "Neucha", cursive;
-}
+.input-puertos-container {
+	background: rgba(255, 255, 255, 0.02);
+	border-radius: var(--radius-md);
+	padding: 1rem;
+	border: 1px solid var(--color-border);
 
-.titulo-seccion {
-	font-weight: bold;
-	margin-bottom: 0.5rem;
-	border-bottom: 1px solid #ccc;
-}
-
-.puerto-row {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	margin-bottom: 0.5rem;
-	gap: 10px;
-}
-
-.puerto-check {
-	display: flex;
-	align-items: center;
-	label {
+	.seccion-header {
 		display: flex;
+		justify-content: space-between;
 		align-items: center;
-		gap: 5px;
-		cursor: pointer;
-	}
-	input {
-		width: 18px;
-		height: 18px;
-	}
-}
+		margin-bottom: 1rem;
 
-.puerto-tickets {
-	display: flex;
-	align-items: center;
-	gap: 5px;
-	select {
-		padding: 2px 5px;
-		border-radius: 4px;
-		font-family: inherit;
+		h3 {
+			font-size: 1.1rem;
+			border: none;
+			margin: 0;
+			padding: 0;
+		}
+
+		.info-tag {
+			font-size: 0.7rem;
+			color: var(--color-text-mute);
+			text-transform: uppercase;
+		}
 	}
-}
 
-.puerto-puntos {
-	min-width: 50px;
-	text-align: right;
-	font-weight: bold;
-}
+	.puertos-list {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
 
-.total-puertos {
-	text-align: right;
-	font-weight: bold;
-	margin-top: 0.5rem;
-	color: #2c3e50;
+	.puerto-card-mini {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0.5rem;
+		background: rgba(255, 255, 255, 0.03);
+		border-radius: var(--radius-sm);
+
+		.puerto-main {
+			display: flex;
+			align-items: center;
+			gap: 1rem;
+		}
+
+		.checkbox-custom {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			cursor: pointer;
+			font-weight: 600;
+			font-size: 0.9rem;
+
+			input {
+				width: 16px;
+				height: 16px;
+				accent-color: var(--color-accent);
+			}
+		}
+
+		.tickets-counter {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			background: var(--color-bg-soft);
+			border-radius: 999px;
+			padding: 2px 8px;
+			border: 1px solid var(--color-border);
+
+			.btn-mini {
+				width: 22px;
+				height: 22px;
+				border-radius: 50%;
+				border: none;
+				background: transparent;
+				color: var(--color-text);
+				font-size: 1rem;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				cursor: pointer;
+
+				&:hover:not(:disabled) {
+					background: var(--color-accent-soft);
+					color: var(--color-accent);
+				}
+
+				&:disabled {
+					opacity: 0.3;
+					cursor: not-allowed;
+				}
+			}
+
+			.counter-val {
+				min-width: 15px;
+				text-align: center;
+				font-weight: 700;
+				font-size: 0.9rem;
+			}
+
+			.counter-label {
+				font-size: 0.7rem;
+				color: var(--color-text-mute);
+				text-transform: uppercase;
+				font-weight: 600;
+				margin-left: 2px;
+			}
+		}
+
+		.puerto-badge {
+			font-weight: 700;
+			font-family: "Neucha", cursive;
+			color: #ef4444;
+
+			&.built {
+				color: var(--color-accent);
+			}
+		}
+	}
+
+	.puertos-footer {
+		margin-top: 1rem;
+		padding-top: 0.75rem;
+		border-top: 1px solid var(--color-border);
+		display: flex;
+		justify-content: space-between;
+		font-size: 0.9rem;
+		font-weight: 600;
+		color: var(--color-text-soft);
+
+		.value {
+			color: var(--color-accent);
+			font-family: "Neucha", cursive;
+			font-size: 1.1rem;
+		}
+	}
 }
 </style>

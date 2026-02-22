@@ -1,18 +1,17 @@
 <template>
-	<div>
-		<div class="label">
-			<div class="info">
-				<span>{{ label }}</span>
-				<span>({{ vagon.puntos }} pts)</span>
-			</div>
-
-			<button class="button" @click="disminuir">-</button>
-			<input class="smallInput" ref="input" type="number" :value="vagon.cantidad" readonly />
-
-			<button class="button" @click="aumentar">+</button>
-
-			<div class="total">{{ vagon.puntosTotales }}</div>
+	<div class="input-vagon-row">
+		<div class="vagon-info">
+			<span class="vagon-label">{{ label }}</span>
+			<span class="vagon-points">({{ vagon.puntos }} pts)</span>
 		</div>
+
+		<div class="vagon-controls">
+			<button class="btn-ctrl" @click="disminuir" aria-label="Disminuir">-</button>
+			<div class="vagon-count">{{ vagon.cantidad }}</div>
+			<button class="btn-ctrl" @click="aumentar" aria-label="Aumentar">+</button>
+		</div>
+
+		<div class="vagon-total">{{ vagon.puntosTotales }}</div>
 	</div>
 </template>
 
@@ -53,34 +52,77 @@ const disminuir = () => {
 };
 </script>
 
-<style lang="scss">
-.button {
-	padding: 10px;
-	border-radius: 5px;
-	border: 1px solid #000;
-}
+<style lang="scss" scoped>
+.input-vagon-row {
+	display: grid;
+	grid-template-columns: 1fr auto 40px;
+	align-items: center;
+	gap: 1rem;
+	padding: 0.5rem;
+	background: rgba(255, 255, 255, 0.02);
+	border-radius: var(--radius-sm);
+	border: 1px solid var(--color-border);
 
-.smallInput {
-	text-align: right;
-}
-
-.label {
-	display: flex;
-	gap: 10px;
-
-	input {
-		width: 40px;
-	}
-	.info {
-		width: 150px;
+	.vagon-info {
 		display: flex;
-		gap: 5px;
-		flex-wrap: wrap;
+		flex-direction: column;
+		
+		.vagon-label {
+			font-size: 0.9rem;
+			font-weight: 500;
+			color: var(--color-text-soft);
+		}
+		
+		.vagon-points {
+			font-size: 0.75rem;
+			color: var(--color-text-mute);
+		}
 	}
 
-	.total {
-		width: 30px;
+	.vagon-controls {
+		display: flex;
+		align-items: center;
+		background: var(--color-bg-soft);
+		border-radius: 999px;
+		padding: 2px;
+		border: 1px solid var(--color-border);
+
+		.btn-ctrl {
+			width: 28px;
+			height: 28px;
+			border-radius: 50%;
+			border: none;
+			background: transparent;
+			color: var(--color-text);
+			font-size: 1.2rem;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			
+			&:hover {
+				background: var(--color-accent-soft);
+				color: var(--color-accent);
+			}
+			
+			&:active {
+				transform: scale(0.9);
+			}
+		}
+
+		.vagon-count {
+			width: 30px;
+			text-align: center;
+			font-weight: 600;
+			font-size: 1rem;
+		}
+	}
+
+	.vagon-total {
 		text-align: right;
+		font-weight: 700;
+		font-family: "Neucha", cursive;
+		font-size: 1.2rem;
+		color: var(--color-accent);
 	}
 }
 </style>
