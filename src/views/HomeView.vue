@@ -25,20 +25,21 @@
 
 		<ModalReglas :isOpen="showRules" :mode="gameMode" @close="showRules = false" />
 
-		<div class="players-section">
+		<div class="players-section" :key="gameMode">
 			<div class="color-selector glass">
 				<CheckColor
-					v-for="(item, i) in jugadores"
-					:key="gameMode + i"
+					v-for="item in jugadores"
+					:key="'check-' + gameMode + '-' + item.id"
 					:jugador="item"
-				></CheckColor>
+				/>
 			</div>
 
 			<div class="jugadores-grid">
-				<TransitionGroup name="card">
-					<ContadorJugador v-for="(item, i) in jugadores" :key="gameMode + i" :jugador="item">
-					</ContadorJugador>
-				</TransitionGroup>
+				<ContadorJugador
+					v-for="item in jugadores"
+					:key="'card-' + gameMode + '-' + item.id"
+					:jugador="item"
+				/>
 			</div>
 		</div>
 

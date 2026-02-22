@@ -7,12 +7,16 @@
 		<div class="card-header">
 			<div class="player-info">
 				<label>{{ $t("player.name_label") }}</label>
-				<input
-					type="text"
-					:value="jugador.nombre"
-					@input="cambiarNombre"
-					:placeholder="$t('player.placeholder')"
-				/>
+				<div class="name-field-container">
+					<input
+						type="text"
+						class="name-input"
+						:value="jugador.nombre"
+						@input="cambiarNombre"
+						:placeholder="$t('player.placeholder')"
+					/>
+					<div class="input-focus-line"></div>
+				</div>
 			</div>
 		</div>
 
@@ -165,34 +169,49 @@ const isLightColor = computed(() => {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		background: rgba(255, 255, 255, 0.03);
+		background: rgba(0, 0, 0, 0.2);
 
 		.player-info {
 			display: flex;
 			flex-direction: column;
-			gap: 0.25rem;
+			gap: 0.75rem;
 			flex: 1;
 
 			label {
 				font-size: 0.75rem;
 				text-transform: uppercase;
 				letter-spacing: 0.05em;
-				color: var(--color-text-mute);
-				font-weight: 600;
+				color: var(--color-accent);
+				font-weight: 700;
 			}
 
-			input {
-				background: transparent;
-				border: none;
-				padding: 0;
-				font-size: 1.25rem;
-				font-weight: 600;
-				color: var(--color-text);
+			.name-field-container {
+				position: relative;
 				width: 100%;
 
-				&:focus {
-					outline: none;
-					color: var(--color-accent);
+				.name-input {
+					background: #000;
+					border: 2px solid #444;
+					padding: 0.75rem 1rem;
+					font-size: 1.4rem;
+					font-weight: 700;
+					color: #fff;
+					width: 100%;
+					border-radius: var(--radius-sm);
+					cursor: text;
+					transition: all 0.2s;
+					caret-color: var(--color-accent);
+
+					&:focus {
+						outline: none;
+						border-color: var(--color-accent);
+						background: #000;
+						box-shadow: 0 0 0 4px var(--color-accent-soft);
+					}
+
+					&:hover {
+						border-color: #666;
+					}
 				}
 			}
 		}

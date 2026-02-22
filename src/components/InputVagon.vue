@@ -6,9 +6,13 @@
 		</div>
 
 		<div class="vagon-controls">
-			<button class="btn-ctrl" @click="disminuir" :aria-label="$t('objetivos.remove')">-</button>
+			<button class="btn-ctrl" @click="disminuir" :aria-label="t('player.objetivos.remove')">
+				−
+			</button>
 			<div class="vagon-count">{{ vagon.cantidad }}</div>
-			<button class="btn-ctrl" @click="aumentar" :aria-label="$t('objetivos.add')">+</button>
+			<button class="btn-ctrl" @click="aumentar" :aria-label="t('player.objetivos.add')">
+				+
+			</button>
 		</div>
 
 		<div class="vagon-total">{{ vagon.puntosTotales }}</div>
@@ -21,7 +25,6 @@ import { useStore } from "@/stores/store";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
-
 const { addVagon, quitarVagon } = useStore();
 
 const props = defineProps({

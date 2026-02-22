@@ -30,9 +30,10 @@ const toggle = () => {
 const color = computed(() => props.jugador.color);
 </script>
 
-<style>
+<style scoped>
 input {
 	accent-color: v-bind(color);
 	box-shadow: 0px 0px 1px 1px v-bind(color);
+	cursor: pointer;
 }
 </style>
