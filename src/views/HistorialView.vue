@@ -1,18 +1,25 @@
 <template>
 	<div class="historial-container">
-		<button class="btn-volver" @click="volver">← Volver</button>
-		<h1>Historial de Partidas</h1>
+		<header class="header-nav">
+			<button class="btn-volver glass" @click="volver">{{ $t("general.back") }}</button>
+		</header>
 
-		<div v-if="historial.length === 0" class="mensaje-vacio">
-			No hay partidas guardadas todavía.
+		<h1>{{ $t("general.history_title") }}</h1>
+
+		<div v-if="historial.length === 0" class="mensaje-vacio glass">
+			<p>{{ $t("general.no_games") }}</p>
 		</div>
 
 		<div v-else class="lista-partidas">
-			<div v-for="(partida, index) in historial" :key="index" class="card-partida">
+			<div v-for="(partida, index) in historial" :key="index" class="card-partida glass">
 				<div class="header-partida">
-					<span class="fecha">{{ formatearFecha(partida.fecha) }}</span>
-					<span class="modo">Modo: {{ partida.modo }}</span>
-					<button class="btn-eliminar" @click="eliminar(index)">Eliminar</button>
+					<div class="meta-info">
+						<span class="fecha">{{ formatearFecha(partida.fecha) }}</span>
+						<span class="modo-badge">{{ $t(`selector.modes.${partida.modo}`) }}</span>
+					</div>
+					<button class="btn-eliminar" @click="eliminar(index)" :title="$t('general.delete')">
+						<span>&times;</span>
+					</button>
 				</div>
 				<div class="jugadores-partida">
 					<div
@@ -33,7 +40,9 @@
 import { useStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const store = useStore();
 const { historial } = storeToRefs(store);
 const { eliminarPartida } = store;
@@ -44,14 +53,14 @@ const volver = () => {
 };
 
 const eliminar = (index) => {
-	if (confirm("¿Estás seguro de que quieres eliminar esta partida del historial?")) {
+	if (confirm(t("general.delete_confirm"))) {
 		eliminarPartida(index);
 	}
 };
 
 const formatearFecha = (stringFecha) => {
 	const fecha = new Date(stringFecha);
-	return fecha.toLocaleDateString("es-ES", {
+	return fecha.toLocaleDateString(undefined, {
 		day: "2-digit",
 		month: "2-digit",
 		year: "numeric",
@@ -63,38 +72,52 @@ const formatearFecha = (stringFecha) => {
 
 <style lang="scss" scoped>
 .historial-container {
-	padding: 20px;
-	max-width: 800px;
+	padding: 2rem 1rem;
+	max-width: 900px;
 	margin: 0 auto;
-	font-family: "Neucha", cursive;
-	background-color: beige;
 	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
 
 	h1 {
 		text-align: center;
-		margin-bottom: 2rem;
+		font-size: 3rem;
+		color: var(--color-accent);
+		text-shadow: 0 4px 12px rgba(56, 189, 248, 0.2);
+		margin: 1rem 0;
+	}
+
+	.header-nav {
+		width: 100%;
+		display: flex;
+		justify-content: flex-start;
 	}
 
 	.btn-volver {
-		padding: 8px 16px;
-		background: none;
-		border: 1px solid #333;
-		border-radius: 4px;
-		cursor: pointer;
-		margin-bottom: 20px;
-		font-family: inherit;
+		padding: 0.6rem 1.2rem;
+		color: var(--color-text-soft);
+		border-radius: var(--radius-md);
 		font-size: 1.1rem;
+		font-family: "Neucha", cursive;
+		display: flex;
+		align-items: center;
+		gap: 8px;
 
 		&:hover {
-			background-color: #eee;
+			color: var(--color-accent);
+			border-color: var(--color-accent);
+			transform: translateX(-4px);
 		}
 	}
 
 	.mensaje-vacio {
+		padding: 3rem;
 		text-align: center;
-		font-size: 1.5rem;
-		margin-top: 3rem;
-		color: #666;
+		border-radius: var(--radius-lg);
+		color: var(--color-text-mute);
+		font-size: 1.4rem;
+		font-family: "Neucha", cursive;
 	}
 
 	.lista-partidas {
@@ -104,41 +127,59 @@ const formatearFecha = (stringFecha) => {
 	}
 
 	.card-partida {
-		background: white;
 		padding: 1.5rem;
-		border-radius: 12px;
-		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-		border-left: 5px solid #2196f3;
+		border-radius: var(--radius-lg);
+		transition: transform 0.2s ease;
+
+		&:hover {
+			transform: scale(1.01);
+		}
 
 		.header-partida {
 			display: flex;
 			justify-content: space-between;
-			align-items: center;
-			margin-bottom: 1rem;
-			padding-bottom: 0.5rem;
-			border-bottom: 1px solid #eee;
+			align-items: flex-start;
+			margin-bottom: 1.5rem;
+			padding-bottom: 1rem;
+			border-bottom: 1px solid var(--color-border);
 
-			.fecha {
-				font-size: 1.2rem;
-				font-weight: bold;
-			}
+			.meta-info {
+				display: flex;
+				flex-direction: column;
+				gap: 0.25rem;
 
-			.modo {
-				text-transform: capitalize;
-				color: #666;
+				.fecha {
+					font-size: 1.2rem;
+					font-weight: 700;
+					color: var(--color-text);
+				}
+
+				.modo-badge {
+					font-size: 0.8rem;
+					text-transform: uppercase;
+					color: var(--color-accent);
+					font-weight: 700;
+					letter-spacing: 0.05em;
+				}
 			}
 
 			.btn-eliminar {
-				background: #ff5252;
-				color: white;
-				border: none;
-				padding: 4px 8px;
-				border-radius: 4px;
+				background: rgba(239, 68, 68, 0.1);
+				color: #ef4444;
+				border: 1px solid rgba(239, 68, 68, 0.2);
+				width: 32px;
+				height: 32px;
+				border-radius: 50%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 1.5rem;
 				cursor: pointer;
-				font-family: inherit;
+				line-height: 0;
 
 				&:hover {
-					background: #ff1744;
+					background: #ef4444;
+					color: white;
 				}
 			}
 		}
@@ -149,21 +190,38 @@ const formatearFecha = (stringFecha) => {
 			gap: 1rem;
 
 			.info-jugador {
-				background: #f5f5f5;
-				padding: 8px 12px;
-				border-radius: 6px;
+				background: rgba(255, 255, 255, 0.04);
+				padding: 0.75rem 1rem;
+				border-radius: var(--radius-md);
+				border: 1px solid var(--color-border);
 				display: flex;
-				gap: 10px;
+				align-items: baseline;
+				gap: 12px;
 
 				.nombre {
-					font-weight: bold;
+					font-weight: 600;
+					color: var(--color-text-soft);
 				}
 
 				.puntos {
-					color: #2196f3;
+					font-family: "Neucha", cursive;
+					font-size: 1.3rem;
+					color: var(--color-accent);
+					font-weight: 700;
 				}
 			}
 		}
+	}
+}
+
+@media (max-width: 640px) {
+	.historial-container h1 {
+		font-size: 2.2rem;
+	}
+	
+	.card-partida .header-partida {
+		flex-direction: row;
+		align-items: center;
 	}
 }
 </style>

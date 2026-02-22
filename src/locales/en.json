@@ -7,7 +7,13 @@
     "confirm_finish": "Are you sure you want to finish the game?",
     "confirm_save_history": "Do you want to save the game data to history?",
     "save_success": "Game saved successfully.",
-    "footer_author": "Andrés Fresno"
+    "footer_author": "Andrés Fresno",
+    "history_title": "Game History",
+    "no_games": "No games saved yet.",
+    "back": "← Back",
+    "delete": "Delete",
+    "delete_confirm": "Are you sure you want to delete this game from history?",
+    "mode_prefix": "Mode: "
   },
   "selector": {
     "mode_label": "Game model",
